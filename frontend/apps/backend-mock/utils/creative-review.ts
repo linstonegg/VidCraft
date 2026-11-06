@@ -1,0 +1,4 @@
+export interface CandidateReview {projectId:number;shotId:number;revision:number;adopted?:number;rejected:number[];events:{action:'adopt'|'reject';versionId:number;date:string;actor:string;revision:number}[]}
+export function reviewCandidate(state:CandidateReview|undefined,projectId:number,shotId:number,versionId:number,action:'adopt'|'reject',expectedRevision:number,actor:string):CandidateReview {
+ const current=state??{projectId,shotId,revision:0,rejected:[],events:[]};if(current.revision!==expectedRevision)throw Error('REVIEW_VERSION_CONFLICT');if(action==='adopt'&&current.rejected.includes(versionId))throw Error('VERSION_REJECTED');const revision=current.revision+1;return {...current,revision,adopted:action==='adopt'?versionId:current.adopted===versionId?undefined:current.adopted,rejected:action==='reject'?[...new Set([...current.rejected,versionId])]:current.rejected,events:[...current.events,{action,versionId,date:new Date().toISOString(),actor,revision}]};
+}

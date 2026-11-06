@@ -1,0 +1,2 @@
+export function projectDifferences(local:Record<string,unknown>,remote:Record<string,unknown>){return [...new Set([...Object.keys(local),...Object.keys(remote)])].filter(k=>!['serverRevision','serverInstance','updatedAt'].includes(k)&&JSON.stringify(local[k])!==JSON.stringify(remote[k])).map(field=>({field,local:local[field],remote:remote[field]}));}
+export function projectFingerprint(project:object){const data={...project} as Record<string,unknown>;delete data.serverRevision;delete data.serverInstance;return JSON.stringify(data);}

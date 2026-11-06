@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import { intakeApi } from '../../apps/web-ele/src/api/creative-video/intake.ts';
+const data=new Map();globalThis.localStorage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)};
+assert.throws(()=>intakeApi.collect(1,'javascript:alert(1)',[]),/协议/);
+assert.throws(()=>intakeApi.collect(1,'https://example.com',[]),/脱敏/);
+const s=intakeApi.load(1);s.redacted=true;s.needsLogin=true;intakeApi.save(1,s);
+assert.throws(()=>intakeApi.collect(1,'https://example.com',[]),/授权/);
+s.authorized=true;intakeApi.save(1,s);
+const result=intakeApi.collect(1,'https://example.com',[{name:'产品.pdf'}]);
+assert.equal(result.evidence.length,3);assert.equal(result.confirmedRevision,undefined);
+assert.equal(intakeApi.load(2).evidence.length,0);
+console.log('通过：网址协议、脱敏、授权门禁、素材证据、项目隔离');

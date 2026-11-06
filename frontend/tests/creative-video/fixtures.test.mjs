@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {installSeeds,resumeShots} from '../../apps/web-ele/src/api/creative-video/fixtures.ts';
+import {projectApi} from '../../apps/web-ele/src/api/creative-video/index.ts';
+import {loadProduction} from '../../apps/web-ele/src/api/creative-video/production.ts';
+const data=new Map();globalThis.localStorage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)};
+assert.equal(resumeShots.length,15);assert.equal(resumeShots.reduce((n,s)=>n+s[1],0),120);
+installSeeds();assert.equal(projectApi.list().length,4);installSeeds();assert.equal(projectApi.list().length,4);
+assert.equal(JSON.parse(data.get('vidcraft-script-1001')).beats.length,7);
+const p=loadProduction(1001,120);assert.equal(p.shots[6].adopted,1);assert.equal(p.shots[6].versions[1].rejected,true);assert.equal(p.shots[6].revision,2);
+projectApi.save([...projectApi.list(),{id:9999,name:'用户项目'}]);data.set('production-1002','{"ledger":[{"jobId":1,"kind":"冻结","amount":24}]}');data.set('production-9999','用户账务');installSeeds(true);assert.equal(projectApi.list().length,5);assert.equal(data.get('production-9999'),'用户账务');assert.equal(data.has('production-1002'),false);
+console.log('通过：四项目固定种子、15镜头120秒、V1/V2、重复安装、受限重置保留用户数据');

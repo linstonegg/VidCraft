@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';
+import {createServerRender} from '../../apps/backend-mock/utils/creative-render.ts';
+import {progress} from '../../apps/backend-mock/utils/creative-finance.ts';
+const account={sequence:100,balance:120,revision:1,entries:[],jobs:[{id:1,projectId:9,shotId:7,status:'success',candidateIds:[11],prompt:'服务端原始画面',revision:2}],reviews:[{projectId:9,shotId:7,adopted:11,rejected:[]}],renders:[]};const shots=[{id:7,version:11,seconds:8}];const settings={targetSeconds:8,aspect:'9:16',resolution:'720p',checks:{story:true,brand:true,truth:true,audio:true}};
+const render=createServerRender(account,9,shots,settings,'once');assert.equal(JSON.parse(render.shots)[0].prompt,'服务端原始画面');assert.equal(createServerRender(account,9,shots,settings,'once').id,render.id);assert.equal(account.renders.length,1);assert.throws(()=>createServerRender(account,9,[{...shots[0],seconds:9}],settings,'once'),/IDEMPOTENCY/);account.reviews[0].adopted=12;assert.equal(JSON.parse(render.shots)[0].version,11);progress(account,Infinity);assert.equal(render.status,'success');assert.throws(()=>createServerRender(account,9,shots,settings,'new'),/APPROVED_VERSION_CHANGED/);assert.equal(account.balance,120);
+console.log('通过：服务端正式引用校验、合成幂等、输入冲突、快照不可变、异步完成及不额外扣费');

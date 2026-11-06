@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {loadWallet,commitWallet,walletTotals} from '../../apps/web-ele/src/api/creative-video/wallet.ts';
+const data=new Map();globalThis.localStorage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)};
+let w=loadWallet();assert.equal(walletTotals(w).available,120);
+w=commitWallet(1,[{jobId:1,kind:'冻结',amount:24}],w.revision);assert.equal(walletTotals(w).available,96);assert.equal(walletTotals(w).held,24);
+assert.throws(()=>commitWallet(2,[{jobId:1,kind:'冻结',amount:24}],1),/其他项目/);
+w=commitWallet(2,[{jobId:1,kind:'冻结',amount:24}],w.revision);assert.equal(walletTotals(w).available,72);
+w=commitWallet(1,[{jobId:1,kind:'冻结',amount:24},{jobId:1,kind:'结算',amount:24}],w.revision);assert.equal(walletTotals(w).spent,24);assert.equal(walletTotals(w).held,24);
+assert.equal(commitWallet(1,[{jobId:1,kind:'冻结',amount:24},{jobId:1,kind:'结算',amount:24}],w.revision).entries.length,3);
+assert.throws(()=>commitWallet(3,[{jobId:1,kind:'冻结',amount:100}],w.revision),/不足/);
+w=commitWallet(2,[{jobId:1,kind:'释放',amount:24}],w.revision);assert.equal(walletTotals(w).available,96);
+console.log('通过：账户初始120、跨项目共享冻结、钱包冲突、结算释放、重复提交、余额不足');
+data.clear();data.set('vidcraft-projects-v1',JSON.stringify([{id:1},{id:2}]));data.set('production-1',JSON.stringify({ledger:[{jobId:1,kind:'冻结',amount:24},{jobId:1,kind:'结算',amount:24}]}));data.set('production-2',JSON.stringify({ledger:[{jobId:1,kind:'冻结',amount:24},{jobId:1,kind:'释放',amount:24}]}));
+const migrated=loadWallet();assert.equal(migrated.entries.length,4);assert.equal(walletTotals(migrated).available,96);assert.equal(walletTotals(migrated).held,0);assert.equal(loadWallet().entries.length,4);
+console.log('通过：历史多项目流水迁移、同任务ID按项目隔离、迁移不重复');

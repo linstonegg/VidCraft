@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {bindStudioAccount,studioStorage,migrateLegacyAccount} from '../../apps/web-ele/src/api/creative-video/storage.ts';
+import {projectApi} from '../../apps/web-ele/src/api/creative-video/index.ts';
+import {loadWallet} from '../../apps/web-ele/src/api/creative-video/wallet.ts';
+const data=new Map();globalThis.localStorage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k),get length(){return data.size},key:i=>[...data.keys()][i]};
+data.set('vidcraft-projects-v1',JSON.stringify([{id:1,name:'旧演示项目'}]));
+bindStudioAccount('admin');migrateLegacyAccount('admin');assert.equal(projectApi.list().length,0);studioStorage.setItem('vidcraft-role','reviewer');
+bindStudioAccount('vben');migrateLegacyAccount('vben');assert.equal(projectApi.list()[0].name,'旧演示项目');assert.equal(studioStorage.getItem('vidcraft-role'),null);const wallet=loadWallet();assert.equal(wallet.entries.length,0);
+studioStorage.setItem('vidcraft-assets','[{"id":7}]');bindStudioAccount('admin');assert.equal(studioStorage.getItem('vidcraft-assets'),null);assert.equal(studioStorage.getItem('vidcraft-role'),'reviewer');bindStudioAccount('vben');migrateLegacyAccount('vben');assert.equal(projectApi.list().length,1);
+console.log('通过：项目素材钱包角色按账号隔离、旧数据仅迁移至vben、迁移幂等');

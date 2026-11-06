@@ -1,0 +1,3 @@
+import assert from 'node:assert/strict';
+import {modelCapabilities,validateModelInput} from '../../apps/backend-mock/utils/creative-models.ts';
+assert.equal(modelCapabilities.length,2);assert.equal(validateModelInput('standard',8,'720p','9:16'),undefined);assert.equal(validateModelInput('standard',7,'720p','9:16'),'MODEL_DURATION_UNSUPPORTED');assert.equal(validateModelInput('standard',8,'1080p','9:16'),'MODEL_RESOLUTION_UNSUPPORTED');assert.equal(validateModelInput('standard',8,'720p','1:1'),'MODEL_ASPECT_UNSUPPORTED');assert.equal(validateModelInput('premium',7,'1080p','1:1'),undefined);console.log('通过：模型秒数、清晰度、画幅能力约束及切换模型恢复有效组合');
