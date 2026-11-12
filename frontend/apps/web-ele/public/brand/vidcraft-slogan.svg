@@ -1,0 +1,68 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 320 320"
+  role="img"
+  aria-label="VidCraft 创意分镜示意"
+>
+  <defs>
+    <linearGradient id="vcBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#efeafe" />
+      <stop offset="1" stop-color="#dcd4fb" />
+    </linearGradient>
+    <linearGradient id="vcCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7b6be6" />
+      <stop offset="1" stop-color="#5b49c9" />
+    </linearGradient>
+    <linearGradient id="vcFrame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#f4f1ff" />
+    </linearGradient>
+  </defs>
+
+  <rect width="320" height="320" rx="40" fill="url(#vcBg)" />
+
+  <!-- 背后的分镜卡片 -->
+  <g opacity="0.55">
+    <rect x="52" y="86" width="150" height="96" rx="14" fill="#c9bdf6" />
+    <rect x="72" y="70" width="150" height="96" rx="14" fill="#b7a8f1" />
+  </g>
+
+  <!-- 主盯帧 -->
+  <g>
+    <rect
+      x="66"
+      y="112"
+      width="188"
+      height="118"
+      rx="18"
+      fill="url(#vcCard)"
+    />
+    <rect
+      x="80"
+      y="126"
+      width="160"
+      height="76"
+      rx="10"
+      fill="url(#vcFrame)"
+      opacity="0.16"
+    />
+    <path d="M146 146v36l32-18z" fill="#ffffff" />
+    <rect x="82" y="212" width="60" height="6" rx="3" fill="#ffffff" opacity="0.55" />
+    <rect x="150" y="212" width="30" height="6" rx="3" fill="#ffffff" opacity="0.35" />
+  </g>
+
+  <!-- 时间线与播放头 -->
+  <g>
+    <rect x="66" y="248" width="188" height="8" rx="4" fill="#c3b6f4" />
+    <rect x="66" y="248" width="112" height="8" rx="4" fill="#6757d7" />
+    <circle cx="178" cy="252" r="9" fill="#ffffff" stroke="#6757d7" stroke-width="4" />
+  </g>
+
+  <!-- 创意星点 -->
+  <path
+    d="M244 84l7 15 15 7-15 7-7 15-7-15-15-7 15-7z"
+    fill="#ffd166"
+  />
+  <circle cx="82" cy="76" r="6" fill="#ffd166" opacity="0.8" />
+  <circle cx="246" cy="196" r="4" fill="#6757d7" opacity="0.5" />
+</svg>

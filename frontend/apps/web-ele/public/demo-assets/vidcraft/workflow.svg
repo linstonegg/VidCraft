@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="VidCraft 工作台截图示意">
+  <rect width="640" height="360" rx="18" fill="#f5f2ff" />
+  <rect x="0" y="0" width="640" height="44" rx="18" fill="#6757d7" />
+  <text x="24" y="28" font-family="'Segoe UI','Microsoft YaHei',sans-serif" font-size="14" font-weight="700" fill="#ffffff">VidCraft 创作平台 · 工作台（Mock 示意）</text>
+  <rect x="24" y="64" width="150" height="268" rx="10" fill="#ffffff" />
+  <rect x="40" y="82" width="118" height="12" rx="6" fill="#6757d7" opacity="0.7" />
+  <rect x="40" y="108" width="96" height="9" rx="4" fill="#ddd6fb" />
+  <rect x="40" y="128" width="110" height="9" rx="4" fill="#e6e1fc" />
+  <rect x="40" y="148" width="84" height="9" rx="4" fill="#e6e1fc" />
+  <rect x="40" y="168" width="100" height="9" rx="4" fill="#e6e1fc" />
+  <rect x="190" y="64" width="426" height="120" rx="10" fill="#ffffff" />
+  <rect x="208" y="82" width="120" height="12" rx="6" fill="#c9bdf6" />
+  <rect x="208" y="106" width="220" height="10" rx="5" fill="#e6e1fc" />
+  <rect x="208" y="126" width="180" height="10" rx="5" fill="#eeebfd" />
+  <rect x="208" y="150" width="92" height="20" rx="10" fill="#6757d7" />
+  <rect x="190" y="200" width="204" height="132" rx="10" fill="#ffffff" />
+  <rect x="208" y="218" width="120" height="10" rx="5" fill="#c9bdf6" />
+  <rect x="208" y="242" width="168" height="70" rx="8" fill="#efeafe" />
+  <rect x="412" y="200" width="204" height="132" rx="10" fill="#ffffff" />
+  <rect x="430" y="218" width="100" height="10" rx="5" fill="#c9bdf6" />
+  <circle cx="514" cy="280" r="34" fill="#b7a8f1" opacity="0.75" />
+  <path d="M514 262v36l20-18z" fill="#ffffff" />
+  <text x="24" y="352" font-family="'Segoe UI','Microsoft YaHei',sans-serif" font-size="11" fill="#9c8ff0">自制示意素材，仅用于 Mock 演示</text>
+</svg>

@@ -3,7 +3,6 @@ import type { DrawerProps, ExtendedDrawerApi } from './drawer';
 
 import {
   computed,
-  onActivated,
   onDeactivated,
   provide,
   ref,
@@ -105,14 +104,9 @@ const {
 // );
 
 /**
- * 缓存页面失活时暂停展示，保留内容区域抽屉的打开状态。
+ * 在开启keepAlive情况下 直接通过浏览器按钮/手势等返回 不会关闭弹窗
  */
-onActivated(() => {
-  isDeactivated.value = false;
-});
-
 onDeactivated(() => {
-  isDeactivated.value = true;
   // 如果弹窗没有被挂载到内容区域，则关闭弹窗
   if (!appendToMain.value) {
     props.drawerApi?.close();
@@ -154,7 +148,9 @@ function handleFocusOutside(e: Event) {
 }
 
 const getAppendTo = computed(() => {
-  return appendToMain.value ? `#${ELEMENT_ID_MAIN_CONTENT}` : undefined;
+  return appendToMain.value
+    ? `#${ELEMENT_ID_MAIN_CONTENT}>div:not(.absolute)>div`
+    : undefined;
 });
 
 /**
@@ -163,66 +159,43 @@ const getAppendTo = computed(() => {
 // 是否打开过
 const hasOpened = ref(false);
 const isClosed = ref(true);
-const isDeactivated = ref(false);
-const isVisible = computed(() => state?.value?.isOpen && !isDeactivated.value);
-let pendingOpened = false;
-
 watch(
   () => state?.value?.isOpen,
   (value) => {
-    pendingOpened = !!value;
-    if (value) isClosed.value = false;
+    isClosed.value = false;
     if (value && !unref(hasOpened)) {
       hasOpened.value = true;
     }
   },
-  { immediate: true },
 );
 function handleClosed() {
   isClosed.value = true;
   props.drawerApi?.onClosed();
 }
-function handleOpened() {
-  requestAnimationFrame(() => {
-    // Restoring a cached drawer must not repeat its logical opening callback.
-    if (pendingOpened && !isDeactivated.value) {
-      pendingOpened = false;
-      props.drawerApi?.onOpened();
-    }
-  });
-}
 const getForceMount = computed(() => {
-  // While inactive, unmountOnHide preserves content outside the interaction layer.
-  return !isDeactivated.value && !unref(destroyOnClose) && unref(hasOpened);
+  return !unref(destroyOnClose) && unref(hasOpened);
 });
 </script>
 <template>
   <Sheet
     :modal="false"
-    :open="isVisible"
-    :unmount-on-hide="!isDeactivated || !hasOpened"
+    :open="state?.isOpen"
     @update:open="() => drawerApi?.close()"
   >
     <SheetContent
       :append-to="getAppendTo"
       :class="
-        cn(
-          'flex w-130 flex-col',
-          {
-            'w-full!':
-              isMobile || placement === 'bottom' || placement === 'top',
-            'max-h-screen': placement === 'bottom' || placement === 'top',
-            hidden: isClosed || isDeactivated,
-          },
-          drawerClass,
-        )
+        cn('flex w-130 flex-col', drawerClass, {
+          'w-full!': isMobile || placement === 'bottom' || placement === 'top',
+          'max-h-screen': placement === 'bottom' || placement === 'top',
+          hidden: isClosed,
+        })
       "
       :modal="modal"
       :open="state?.isOpen"
       :side="placement"
       :z-index="zIndex"
       :force-mount="getForceMount"
-      :inactive="isDeactivated"
       :overlay-blur="overlayBlur"
       @close-auto-focus="handleFocusOutside"
       @closed="handleClosed"
@@ -230,7 +203,7 @@ const getForceMount = computed(() => {
       @focus-outside="handleFocusOutside"
       @interact-outside="interactOutside"
       @open-auto-focus="handerOpenAutoFocus"
-      @opened="handleOpened"
+      @opened="() => drawerApi?.onOpened()"
       @pointer-down-outside="pointerDownOutside"
     >
       <SheetHeader

@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import { diff, diffStrict } from '@vben-core/shared/utils';
+import { diff } from '@vben-core/shared/utils';
 
 import { preferencesManager } from './preferences';
 import { isDarkTheme } from './update-css-variables';
@@ -16,10 +16,9 @@ function usePreferences() {
   );
   /**
    * @zh_CN 计算偏好设置的变化
-   * @zh_CN 使用 diffStrict：图标排序等数组字段需顺序敏感比较
    */
   const diffPreference = computed(() => {
-    return diffStrict(initialPreferences, preferences);
+    return diff(initialPreferences, preferences);
   });
 
   const diffCustomPreference = computed(() => {
@@ -40,7 +39,7 @@ function usePreferences() {
   });
 
   const locale = computed(() => {
-    return appPreferences.value.locale;
+    return preferences.app.locale;
   });
 
   const isMobile = computed(() => {
@@ -186,14 +185,6 @@ function usePreferences() {
     return enable && globalLogout;
   });
 
-  /**
-   * @zh_CN 是否启用全局注销快捷键
-   */
-  const globalEscapeShortcutKey = computed(() => {
-    const { enable, globalEscape } = shortcutKeysPreferences.value;
-    return enable && globalEscape;
-  });
-
   const globalLockScreenShortcutKey = computed(() => {
     const { enable, globalLockScreen } = shortcutKeysPreferences.value;
     return enable && globalLockScreen;
@@ -256,7 +247,6 @@ function usePreferences() {
     diffCustomPreference,
     globalLockScreenShortcutKey,
     globalLogoutShortcutKey,
-    globalEscapeShortcutKey,
     globalSearchShortcutKey,
     isDark,
     isFullContent,
@@ -275,7 +265,6 @@ function usePreferences() {
     preferencesButtonPosition,
     sidebarCollapsed,
     theme,
-    app: appPreferences.value,
   };
 }
 

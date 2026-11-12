@@ -1,10 +1,130 @@
-import { studioStorage } from './storage.ts';
-import type { StoryBeat } from './story.ts';
-import { invalidateFrom } from './approvals.ts';
-import { authorize } from './permissions.ts';
-export interface ScriptRevision {revision:number;strategy:string;beats:StoryBeat[];script:string;date:string}
-export interface ScriptDocument extends ScriptRevision {history:ScriptRevision[]}
-export function scriptText(beats:StoryBeat[]){return beats.map((b,i)=>`${String(i+1).padStart(2,'0')} · ${b.seconds} 秒\n${b.text}`).join('\n\n');}
-export function validateBeats(beats:StoryBeat[],duration:number){if(!beats.length)throw Error('请先生成故事节拍');if(beats.some(b=>!b.text.trim()||!Number.isFinite(b.seconds)||b.seconds<1||b.seconds>300))throw Error('每个节拍需包含剧情，时长为1至300秒，长节拍会拆成短镜头');const total=beats.reduce((n,b)=>n+b.seconds,0);if(Math.abs(total-duration)>0.01)throw Error(`剧本总时长 ${total} 秒与目标 ${duration} 秒不符`);}
-export function loadScript(id:number):ScriptDocument{const raw=JSON.parse(studioStorage.getItem(`vidcraft-script-${id}`)||'{}') as Partial<ScriptDocument>;return {revision:raw.revision??0,strategy:raw.strategy??'完整故事扩写',beats:raw.beats??[],script:raw.script??'',date:raw.date??'',history:raw.history??[]};}
-export function saveScript(id:number,strategy:string,beats:StoryBeat[],duration:number){authorize('edit');studioStorage.setItem(`vidcraft-script-dirty-${id}`,'true');validateBeats(beats,duration);const previous=loadScript(id);const history=previous.history.slice();if(previous.revision&&!history.some(h=>h.revision===previous.revision))history.push({revision:previous.revision,strategy:previous.strategy,beats:previous.beats,script:previous.script,date:previous.date});const next:ScriptDocument={revision:previous.revision+1,strategy,beats:JSON.parse(JSON.stringify(beats)) as StoryBeat[],script:scriptText(beats),date:new Date().toISOString(),history};studioStorage.setItem(`vidcraft-script-${id}`,JSON.stringify(next));studioStorage.removeItem(`vidcraft-script-dirty-${id}`);invalidateFrom(id,3);return next;}
+import type { DurationPlan, ScriptRevision } from '#/types/creative-video';
+
+import { createIdempotencyKey } from '#/utils/creative-video/validation';
+
+import { getBusinessData, patchBusinessData, postBusinessData } from './client';
+
+export function evaluateDuration(
+  projectId: string,
+  payload: { conceptRevisionId: string; targetDurationMs: number },
+) {
+  return postBusinessData<DurationPlan>(
+    `/projects/${encodeURIComponent(projectId)}/duration-plans/evaluate`,
+    payload,
+  );
+}
+
+export function listDurationPlans(projectId: string) {
+  return getBusinessData<DurationPlan[]>(
+    `/projects/${encodeURIComponent(projectId)}/duration-plans`,
+  );
+}
+
+export function patchDurationPlan(
+  projectId: string,
+  planId: string,
+  payload: {
+    acceptedRiskNotes?: string[];
+    expectedVersion: number;
+    selectedStrategy?: string;
+  },
+) {
+  return patchBusinessData<DurationPlan>(
+    `/projects/${encodeURIComponent(projectId)}/duration-plans/${encodeURIComponent(planId)}`,
+    payload,
+  );
+}
+
+export function generateScript(
+  projectId: string,
+  payload: {
+    conceptRevisionId: string;
+    durationPlanId: string;
+    scenario?: string;
+  },
+  key = createIdempotencyKey('script'),
+) {
+  return postBusinessData<{ jobId: string }>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/generate`,
+    payload,
+    { headers: { 'Idempotency-Key': key } },
+  );
+}
+
+export function getScriptsState(projectId: string) {
+  return getBusinessData<{
+    active: null | ScriptRevision;
+    concept: any;
+    durationPlans: DurationPlan[];
+    latest: null | ScriptRevision;
+    scripts: ScriptRevision[];
+  }>(`/projects/${encodeURIComponent(projectId)}/scripts/revisions`);
+}
+
+export function getScript(projectId: string, revisionId: string) {
+  return getBusinessData<ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/revisions/${encodeURIComponent(revisionId)}`,
+  );
+}
+
+export function patchScript(
+  projectId: string,
+  revisionId: string,
+  payload: { expectedVersion: number; patch: Record<string, any> },
+) {
+  return patchBusinessData<ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/revisions/${encodeURIComponent(revisionId)}`,
+    payload,
+  );
+}
+
+export function forkScript(
+  projectId: string,
+  revisionId: string,
+  expectedVersion: number,
+) {
+  return postBusinessData<ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/revisions/${encodeURIComponent(revisionId)}/fork`,
+    { expectedVersion },
+  );
+}
+
+export function submitScriptReview(
+  projectId: string,
+  revisionId: string,
+  expectedVersion: number,
+) {
+  return postBusinessData<ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/revisions/${encodeURIComponent(revisionId)}/submit-review`,
+    { expectedVersion },
+  );
+}
+
+export function approveScript(
+  projectId: string,
+  revisionId: string,
+  expectedVersion: number,
+) {
+  return postBusinessData<ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/revisions/${encodeURIComponent(revisionId)}/approve`,
+    { expectedVersion },
+  );
+}
+
+export function rejectScript(
+  projectId: string,
+  revisionId: string,
+  expectedVersion: number,
+  reason: string,
+) {
+  return postBusinessData<ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/revisions/${encodeURIComponent(revisionId)}/reject`,
+    { expectedVersion, reason },
+  );
+}
+
+export function getActiveScript(projectId: string) {
+  return getBusinessData<null | ScriptRevision>(
+    `/projects/${encodeURIComponent(projectId)}/scripts/active`,
+  );
+}

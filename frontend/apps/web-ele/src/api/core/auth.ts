@@ -29,20 +29,16 @@ export async function loginApi(data: AuthApi.LoginParams) {
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>(
-    '/auth/refresh',
-    undefined,
-    {
-      withCredentials: true,
-    },
-  );
+  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
+    withCredentials: true,
+  });
 }
 
 /**
  * 退出登录
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', undefined, {
+  return baseRequestClient.post('/auth/logout', {
     withCredentials: true,
   });
 }

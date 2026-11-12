@@ -1,9 +1,7 @@
 import type { Component } from 'vue';
 import type { Router, RouteRecordRaw } from 'vue-router';
 
-import type { Recordable } from './helper';
-
-interface VbenRouteMeta {
+interface RouteMeta {
   /**
    * 激活图标（菜单/tab）
    */
@@ -12,11 +10,6 @@ interface VbenRouteMeta {
    * 当前激活的菜单，有时候不想激活现有菜单，需要激活父级菜单时使用
    */
   activePath?: string;
-  /**
-   * 是否使用 activePath 对应的路由层级生成面包屑
-   * @default false
-   */
-  breadcrumbUseActivePath?: boolean;
   /**
    * 是否固定标签页
    * @default false
@@ -49,7 +42,7 @@ interface VbenRouteMeta {
     | 'primary'
     | 'success'
     | 'warning'
-    | (string & {});
+    | string;
   /**
    * 路由对应dom是否缓存起来
    */
@@ -127,7 +120,7 @@ interface VbenRouteMeta {
   /**
    * 菜单所携带的参数
    */
-  query?: Recordable<any>;
+  query?: Recordable;
   /**
    * 标题名称
    */
@@ -155,15 +148,10 @@ interface GenerateMenuAndRoutesOptions {
   routes: RouteRecordRaw[];
 }
 
-// 以 VbenRouteMeta 为底名、RouteMeta 别名导出：本包 barrel 内的
-// declare module 'vue-router' 增强若直接 extends 同名接口，tsdown 打包
-// dist 时会把别名还原成原名，产出 `interface RouteMeta extends RouteMeta`
-// 的自引用声明（消费者 TS2310）。
 export type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
-  VbenRouteMeta as RouteMeta,
+  RouteMeta,
   RouteRecordRaw,
   RouteRecordStringComponent,
-  VbenRouteMeta,
 };

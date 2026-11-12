@@ -69,7 +69,7 @@ features:
     icon:
       src: /logos/nitro.svg
     details: Built-in Nitro Mock service makes your mock service more powerful.
-    link: https://nitro.build/
+    link: https://nitro.unjs.io/
     linkText: Official Site
 ---
 

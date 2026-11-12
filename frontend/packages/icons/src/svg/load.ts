@@ -2,7 +2,7 @@ import type { IconifyIconStructure } from '@vben-core/icons';
 
 import { addIcon } from '@vben-core/icons';
 
-void loadSvgIcons();
+loadSvgIcons();
 
 function parseSvg(svgData: string): IconifyIconStructure {
   const parser = new DOMParser();
@@ -66,16 +66,18 @@ async function loadSvgIcons() {
     query: '?raw',
   });
 
-  Object.entries(svgEagers).forEach((svg) => {
-    const [key, body] = svg as [string, string | { default: string }];
+  await Promise.all(
+    Object.entries(svgEagers).map((svg) => {
+      const [key, body] = svg as [string, string | { default: string }];
 
-    // ./icons/xxxx.svg => xxxxxx
-    const start = key.lastIndexOf('/') + 1;
-    const end = key.lastIndexOf('.');
-    const iconName = key.slice(start, end);
+      // ./icons/xxxx.svg => xxxxxx
+      const start = key.lastIndexOf('/') + 1;
+      const end = key.lastIndexOf('.');
+      const iconName = key.slice(start, end);
 
-    addIcon(`svg:${iconName}`, {
-      ...parseSvg(typeof body === 'object' ? body.default : body),
-    });
-  });
+      return addIcon(`svg:${iconName}`, {
+        ...parseSvg(typeof body === 'object' ? body.default : body),
+      });
+    }),
+  );
 }

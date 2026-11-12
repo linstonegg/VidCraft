@@ -25,9 +25,8 @@ withDefaults(defineProps<Props>(), {
     <!-- ICP Link -->
     <a
       v-if="icp"
-      :href="icpLink || 'https://beian.miit.gov.cn/'"
+      :href="icpLink || 'javascript:void(0)'"
       class="mx-1 hover:text-primary-hover"
-      rel="noopener noreferrer"
       target="_blank"
     >
       {{ icp }}

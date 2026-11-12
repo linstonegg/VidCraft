@@ -37,7 +37,7 @@ const menuIcon = computed(() =>
 const isHttp = computed(() => isHttpUrl(item.parentPaths.at(-1)));
 
 const isTopLevelMenuItem = computed(
-  () => parentMenu.value?.type.name === 'MenuUI',
+  () => parentMenu.value?.type.name === 'Menu',
 );
 
 const collapseShowTitle = computed(
@@ -131,9 +131,7 @@ onBeforeUnmount(() => {
         />
         <VbenIcon :class="nsMenu.e('icon')" :icon="menuIcon" />
         <slot></slot>
-        <span v-if="$slots.title" :class="nsMenu.e('name')">
-          <slot name="title"></slot>
-        </span>
+        <slot name="title"></slot>
       </div>
     </a>
   </router-link>

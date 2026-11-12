@@ -77,7 +77,7 @@ export function useTabbar() {
   // 点击tab,跳转路由
   const handleClick = (key: string) => {
     const { fullPath, path } = tabbarStore.getTabByKey(key);
-    void router.push(fullPath || path);
+    router.push(fullPath || path);
   };
 
   // 关闭tab
@@ -90,7 +90,7 @@ export function useTabbar() {
       ...tab,
       meta: {
         ...tab?.meta,
-        title: $t(tab?.meta?.title),
+        title: $t(tab?.meta?.title as string),
       },
     };
   }
@@ -109,8 +109,6 @@ export function useTabbar() {
       const meta = route.matched?.[route.matched.length - 1]?.meta;
       tabbarStore.addTab({
         ...route,
-        // key 用合并后的 route.meta 计算，父级的 fullPathKey 同样生效
-        key: getTabKey(route),
         meta: meta || route.meta,
       });
     },

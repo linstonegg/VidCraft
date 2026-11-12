@@ -1,4 +1,4 @@
-import { execa, getPackages } from '@vben/node-utils';
+import { execaCommand, getPackages } from '@vben/node-utils';
 
 import { cancel, isCancel, select } from '@clack/prompts';
 
@@ -23,9 +23,9 @@ export async function run(options: RunOptions) {
     return (pkg?.packageJson as Record<string, any>)?.scripts?.[command];
   });
 
-  let selectPkg: string;
+  let selectPkg: string | symbol;
   if (selectPkgs.length > 1) {
-    const selected = await select<string>({
+    selectPkg = await select<string>({
       message: `Select the app you need to run [${command}]:`,
       options: selectPkgs.map((item) => ({
         label: item?.packageJson.name,
@@ -33,11 +33,10 @@ export async function run(options: RunOptions) {
       })),
     });
 
-    if (isCancel(selected) || !selected) {
+    if (isCancel(selectPkg) || !selectPkg) {
       cancel('👋 Has cancelled');
       process.exit(0);
     }
-    selectPkg = selected;
   } else {
     selectPkg = selectPkgs[0]?.packageJson?.name ?? '';
   }
@@ -47,13 +46,9 @@ export async function run(options: RunOptions) {
     process.exit(1);
   }
 
-  try {
-    await execa('pnpm', [`--filter=${selectPkg}`, 'run', command], {
-      stdio: 'inherit',
-    });
-  } catch (error: any) {
-    process.exit(error.exitCode || 1);
-  }
+  execaCommand(`pnpm --filter=${selectPkg} run ${command}`, {
+    stdio: 'inherit',
+  });
 }
 
 /**

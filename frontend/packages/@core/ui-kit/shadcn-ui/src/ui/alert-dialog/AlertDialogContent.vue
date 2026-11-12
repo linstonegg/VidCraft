@@ -3,23 +3,17 @@ import type { AlertDialogContentEmits, AlertDialogContentProps } from 'reka-ui';
 
 import type { ClassType } from '@vben-core/typings';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { cn } from '@vben-core/shared/utils';
 
-import { reactiveOmit } from '@vueuse/core';
 import {
   AlertDialogContent,
   AlertDialogPortal,
   useForwardPropsEmits,
 } from 'reka-ui';
 
-import { useDialogStateEvents } from '../dialog/use-dialog-state-events';
 import AlertDialogOverlay from './AlertDialogOverlay.vue';
-
-defineOptions({
-  inheritAttrs: false,
-});
 
 const props = withDefaults(
   defineProps<
@@ -38,25 +32,25 @@ const emits = defineEmits<
   AlertDialogContentEmits & { close: []; closed: []; opened: [] }
 >();
 
-// reka-ui 的 AlertDialog 在 modal=true 时会将 body 设置 pointer-events:none，
-// 弹出层（如 Select 下拉框）会因此无法点击。这里通过在上层传入 :modal="false" 来
-// 避免该问题，同时通过 AlertDialogOverlay 组件自行渲染遮罩并锁定滚动。
-// AlertDialogOverlay 通过 v-if 控制挂载/卸载，其内部的 useScrollLock 会在组件
-// 卸载时自动解锁滚动。
+const delegatedProps = computed(() => {
+  const { class: _, modal: _modal, open: _open, ...delegated } = props;
 
-const delegatedProps = reactiveOmit(props, 'class');
+  return delegated;
+});
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 const contentRef = ref<InstanceType<typeof AlertDialogContent> | null>(null);
-
-const { handleAnimationEvent } = useDialogStateEvents({
-  contentRef,
-  isOpen: () => props.open,
-  onClosed: () => emits('closed'),
-  onOpened: () => emits('opened'),
-});
-
+function onAnimationEnd(event: AnimationEvent) {
+  // 只有在 contentRef 的动画结束时才触发 opened/closed 事件
+  if (event.target === contentRef.value?.$el) {
+    if (props.open) {
+      emits('opened');
+    } else {
+      emits('closed');
+    }
+  }
+}
 defineExpose({
   getContentRef: () => contentRef.value,
 });
@@ -67,22 +61,25 @@ defineExpose({
     <Transition name="fade" appear>
       <AlertDialogOverlay
         v-if="open && modal"
-        :overlay-blur="overlayBlur"
-        position="fixed"
-        :z-index="zIndex"
+        :style="{
+          ...(zIndex ? { zIndex } : {}),
+          position: 'fixed',
+          backdropFilter:
+            overlayBlur && overlayBlur > 0 ? `blur(${overlayBlur}px)` : 'none',
+        }"
         @click="() => emits('close')"
       />
     </Transition>
     <AlertDialogContent
-      data-slot="alert-dialog-content"
       ref="contentRef"
       :style="{ ...(zIndex ? { zIndex } : {}), position: 'fixed' }"
-      @animationend="handleAnimationEvent"
-      @animationcancel="handleAnimationEvent"
-      v-bind="{ ...$attrs, ...forwarded }"
+      @animationend="onAnimationEnd"
+      v-bind="forwarded"
       :class="
         cn(
-          'z-popup bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed left-[50%] w-full max-w-[calc(100%-2rem)] translate-x-[-50%] rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg',
+          'z-popup bg-background p-6 shadow-lg outline-hidden sm:rounded-xl',
+          'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+          'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
           {
             'data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-top-[48%]':
               !centered,

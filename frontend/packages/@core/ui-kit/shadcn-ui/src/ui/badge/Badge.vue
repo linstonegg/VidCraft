@@ -1,33 +1,18 @@
 <script setup lang="ts">
-import type { PrimitiveProps } from 'reka-ui';
-
-import type { HTMLAttributes } from 'vue';
-
-import type { BadgeVariants } from '.';
+import type { BadgeVariants } from './badge';
 
 import { cn } from '@vben-core/shared/utils';
 
-import { reactiveOmit } from '@vueuse/core';
-import { Primitive } from 'reka-ui';
+import { badgeVariants } from './badge';
 
-import { badgeVariants } from '.';
-
-const props = defineProps<
-  PrimitiveProps & {
-    class?: HTMLAttributes['class'];
-    variant?: BadgeVariants['variant'];
-  }
->();
-
-const delegatedProps = reactiveOmit(props, 'class');
+const props = defineProps<{
+  class?: any;
+  variant?: BadgeVariants['variant'];
+}>();
 </script>
 
 <template>
-  <Primitive
-    data-slot="badge"
-    :class="cn(badgeVariants({ variant }), props.class)"
-    v-bind="delegatedProps"
-  >
+  <div :class="cn(badgeVariants({ variant }), props.class)">
     <slot></slot>
-  </Primitive>
+  </div>
 </template>

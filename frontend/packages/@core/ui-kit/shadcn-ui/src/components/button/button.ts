@@ -2,7 +2,7 @@ import type { AsTag } from 'reka-ui';
 
 import type { Component } from 'vue';
 
-import type { ButtonVariants } from '../../ui';
+import type { ButtonVariants, ButtonVariantSize } from '../../ui';
 
 export interface VbenButtonProps {
   /**
@@ -19,8 +19,8 @@ export interface VbenButtonProps {
   class?: any;
   disabled?: boolean;
   loading?: boolean;
-  size?: ButtonVariants['size'];
-  variant?: ButtonVariants['variant'];
+  size?: ButtonVariantSize;
+  variant?: ButtonVariants;
 }
 
 export type CustomRenderType = (() => Component | string) | string;

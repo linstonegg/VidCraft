@@ -24,7 +24,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      void message.loading({
+      message.loading({
         content: `${$t('common.loadingMenu')}...`,
         duration: 1500,
       });

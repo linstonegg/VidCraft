@@ -1,6 +1,6 @@
 {
   "name": "@vben-core/shared",
-  "version": "5.8.0",
+  "version": "5.7.0",
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -12,8 +12,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm exec tsdown",
-    "stub": "pnpm run build",
-    "typecheck": "vue-tsc --noEmit"
+    "stub": "pnpm run build"
   },
   "files": [
     "dist"

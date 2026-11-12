@@ -1,3 +1,0 @@
-import assert from 'node:assert/strict';
-import {validateEvidence} from '../../apps/web-ele/src/api/creative-video/intake.ts';
-const evidence={id:1,statement:'用户提供产品说明',source:'说明.pdf',level:'待核实',kind:'DOCUMENT',page:3,excerpt:'摘录内容'};validateEvidence(evidence);assert.throws(()=>validateEvidence({...evidence,page:0}),/页码/);validateEvidence({...evidence,timestamp:'01:15'});assert.throws(()=>validateEvidence({...evidence,timestamp:'01:99'}),/小于60/);assert.throws(()=>validateEvidence({...evidence,source:''}),/来源/);assert.throws(()=>validateEvidence({...evidence,excerpt:'a'.repeat(5001)}),/5000/);console.log('通过：证据来源、页码、录屏时间码与摘录长度校验');

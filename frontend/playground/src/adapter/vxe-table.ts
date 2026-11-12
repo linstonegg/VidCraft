@@ -1,24 +1,20 @@
-import type { FormValues, TableActionProps } from '@vben/common-ui';
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import type { Recordable } from '@vben/types';
 
 import type { ComponentPropsMap, ComponentType } from './component';
 
-import { defineComponent, h } from 'vue';
+import { h } from 'vue';
 
-import { useAccess } from '@vben/access';
-import { VbenTableAction as VbenTableActionCore } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $te } from '@vben/locales';
 import {
   setupVbenVxeTable,
   useVbenVxeGrid as useGrid,
 } from '@vben/plugins/vxe-table';
-import { useDictStore } from '@vben/stores';
 import { get, isFunction, isString } from '@vben/utils';
 
 import { objectOmit } from '@vueuse/core';
-import { Button, Dropdown, Image, Popconfirm, Switch, Tag } from 'antdv-next';
+import { Button, Image, Popconfirm, Switch, Tag } from 'antdv-next';
 
 import { $t } from '#/locales';
 
@@ -103,27 +99,6 @@ setupVbenVxeTable({
       },
     });
 
-    // 单元格渲染：字典标签
-    // 表格配置项可用 cellRender: { name: 'CellDict', props: { code: 'user_gender' } }
-    vxeUI.renderer.add('CellDict', {
-      renderTableDefault({ props }, { column, row }) {
-        const code = props?.code as string | undefined;
-        const value = get(row, column.field);
-        if (!code) {
-          return value;
-        }
-        const dictStore = useDictStore();
-        const item = dictStore.getDictItem(code, value);
-        if (!item) {
-          return value;
-        }
-        if (item.color) {
-          return h(Tag, { color: item.color }, { default: () => item.label });
-        }
-        return item.label;
-      },
-    });
-
     vxeUI.renderer.add('CellSwitch', {
       renderTableDefault({ attrs, props }, { column, row }) {
         const loadingKey = `__loading_${column.field}`;
@@ -156,18 +131,7 @@ setupVbenVxeTable({
      * 注册表格的操作按钮渲染器
      */
     vxeUI.renderer.add('CellOperation', {
-      renderTableDefault({ attrs, options, props: rawProps }, { column, row }) {
-        const {
-          dropdownProps,
-          menuButtonProps,
-          menuButtonPosition = 'right',
-          menuCodes = [],
-          menuIcon = 'ant-design:more-outlined',
-          menuText = $t('common.more'),
-          mode,
-          renderMode,
-          ...props
-        } = rawProps ?? {};
+      renderTableDefault({ attrs, options, props }, { column, row }) {
         const defaultProps = { size: 'small', type: 'link', ...props };
         let align: string;
         switch (column.align) {
@@ -192,12 +156,9 @@ setupVbenVxeTable({
           edit: {
             text: $t('common.edit'),
           },
-          detail: {
-            text: $t('common.detail'),
-          },
         };
         const operations: Array<Recordable<any>> = (
-          options || ['edit', 'detail', 'delete']
+          options || ['edit', 'delete']
         )
           .map((opt) => {
             if (isString(opt)) {
@@ -301,118 +262,16 @@ setupVbenVxeTable({
           );
         }
 
-        const renderOperation = (opt: Recordable<any>) =>
-          opt.code === 'delete' ? renderConfirm(opt) : renderBtn(opt);
-        const btns = operations.map((operation) => renderOperation(operation));
-
-        function renderMenuTrigger() {
-          return h(
-            Button,
-            {
-              size: defaultProps.size,
-              type: defaultProps.type,
-              ...menuButtonProps,
-            },
-            {
-              default: () => {
-                const content = [];
-                if (menuIcon) {
-                  content.push(
-                    h(IconifyIcon, { class: 'size-5', icon: menuIcon }),
-                  );
-                }
-                if (menuText) {
-                  content.push(h('span', menuText));
-                }
-                return h(
-                  'div',
-                  { class: 'inline-flex items-center gap-1 leading-none' },
-                  content,
-                );
-              },
-            },
-          );
-        }
-
-        const operationRenderStrategies = {
-          button: () => btns,
-          menu: () => {
-            // 未配置 menuCodes 时，renderMode=menu 仍然将全部操作收入下拉菜单。
-            const hasMenuCodes =
-              Array.isArray(menuCodes) && menuCodes.length > 0;
-            const menuCodeSet = new Set(menuCodes);
-            const inlineBtns = hasMenuCodes
-              ? operations
-                  .filter((opt) => !menuCodeSet.has(opt.code))
-                  .map((operation) => renderOperation(operation))
-              : [];
-            const menuBtns = hasMenuCodes
-              ? operations
-                  .filter((opt) => menuCodeSet.has(opt.code))
-                  .map((operation) => renderOperation(operation))
-              : btns;
-            const dropdownBtn =
-              menuBtns.length > 0
-                ? [
-                    h(
-                      Dropdown,
-                      {
-                        getPopupContainer: () => document.body,
-                        placement:
-                          column.align === 'left'
-                            ? 'bottomLeft'
-                            : 'bottomRight',
-                        trigger: ['click'],
-                        ...dropdownProps,
-                      },
-                      {
-                        default: () =>
-                          h(
-                            'span',
-                            {
-                              class: 'inline-flex cursor-pointer',
-                            },
-                            [renderMenuTrigger()],
-                          ),
-
-                        popupRender: () =>
-                          h(
-                            'div',
-                            {
-                              class:
-                                'ant-dropdown-menu flex flex-col gap-1 p-1',
-
-                              onClick: (event: MouseEvent) =>
-                                event.stopPropagation(),
-
-                              style: {
-                                minWidth: '80px',
-                              },
-                            },
-                            menuBtns,
-                          ),
-                      },
-                    ),
-                  ]
-                : [];
-
-            return hasMenuCodes && menuButtonPosition === 'left'
-              ? [...dropdownBtn, ...inlineBtns]
-              : [...inlineBtns, ...dropdownBtn];
-          },
-        };
-        const renderOperations =
-          (renderMode ?? mode) === 'menu'
-            ? operationRenderStrategies.menu
-            : operationRenderStrategies.button;
-
+        const btns = operations.map((opt) =>
+          opt.code === 'delete' ? renderConfirm(opt) : renderBtn(opt),
+        );
         return h(
           'div',
           {
             class: 'flex table-operations',
             style: { justifyContent: align },
           },
-          renderOperations(),
+          btns,
         );
       },
     });
@@ -422,47 +281,9 @@ setupVbenVxeTable({
   },
 });
 
-export const useVbenVxeGrid = <
-  T extends Record<string, any>,
-  TFormValues extends FormValues = FormValues,
-  TSubmitValues extends FormValues = TFormValues,
->(
-  ...rest: Parameters<
-    typeof useGrid<
-      T,
-      ComponentType,
-      ComponentPropsMap,
-      TFormValues,
-      TSubmitValues
-    >
-  >
-) =>
-  useGrid<T, ComponentType, ComponentPropsMap, TFormValues, TSubmitValues>(
-    ...rest,
-  );
-
-/**
- * 表格操作按钮组件
- *
- * 在适配器内部统一注入权限判断（hasPermission），使用方无需再传入 `:has-permission`。
- * 通过 action 的 `auth` 字段声明权限码，结合 `useAccess().hasAccessByCodes` 判断是否展示。
- * 如需自定义权限逻辑，仍可显式传入 `:has-permission` 覆盖默认行为。
- */
-export const VbenTableAction = defineComponent(
-  (props: TableActionProps, { attrs, slots }) => {
-    const { hasAccessByCodes } = useAccess();
-    function hasPermission(auth?: string | string[]) {
-      if (!auth) return true;
-      return hasAccessByCodes(Array.isArray(auth) ? auth : [auth]);
-    }
-    return () =>
-      h(VbenTableActionCore, { hasPermission, ...props, ...attrs }, slots);
-  },
-  {
-    name: 'VbenTableAction',
-    inheritAttrs: false,
-  },
-);
+export const useVbenVxeGrid = <T extends Record<string, any>>(
+  ...rest: Parameters<typeof useGrid<T, ComponentType, ComponentPropsMap>>
+) => useGrid<T, ComponentType, ComponentPropsMap>(...rest);
 
 export type OnActionClickParams<T = Recordable<any>> = {
   code: string;

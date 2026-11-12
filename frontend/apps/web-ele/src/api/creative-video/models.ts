@@ -1,4 +1,0 @@
-import {requestClient} from '#/api/request';
-export interface ModelCapability {id:'standard'|'premium';displayName:string;category:string;supportedDurationsSeconds:number[];supportedAspectRatios:string[];resolutions:string[];supportsImageToVideo:boolean;supportsStartFrame:boolean;supportsEndFrame:boolean;supportsVideoExtension:boolean;supportsVideoEdit:boolean;supportsNativeAudio:boolean;costPolicyCode:string}
-export const modelApi={list(){return requestClient.get<ModelCapability[]>('/creative-video/models');}};
-export function capabilityIssue(capability:ModelCapability|undefined,seconds:number,resolution:string,aspect:string){if(!capability)return '模型能力尚未加载';if(!capability.supportedDurationsSeconds.includes(seconds))return `支持 ${capability.supportedDurationsSeconds.join('/')} 秒；请调整镜头时长或选择其他模型`;if(!capability.resolutions.includes(resolution))return '当前模型不支持此清晰度';if(!capability.supportedAspectRatios.includes(aspect))return '当前模型不支持此画幅';return '';}

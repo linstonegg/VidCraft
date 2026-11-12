@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         name: 'FormExample',
-        path: 'form',
+        path: '/examples/form',
         meta: {
           icon: 'mdi:form-select',
           title: $t('examples.form.title'),
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             name: 'FormBasicExample',
-            path: 'basic',
+            path: '/examples/form/basic',
             component: () => import('#/views/examples/form/basic.vue'),
             meta: {
               title: $t('examples.form.basic'),
@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormQueryExample',
-            path: 'query',
+            path: '/examples/form/query',
             component: () => import('#/views/examples/form/query.vue'),
             meta: {
               title: $t('examples.form.query'),
@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormValueFormatExample',
-            path: 'value-format',
+            path: '/examples/form/value-format',
             component: () => import('#/views/examples/form/value-format.vue'),
             meta: {
               title: $t('examples.form.valueFormat'),
@@ -47,7 +47,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormRulesExample',
-            path: 'rules',
+            path: '/examples/form/rules',
             component: () => import('#/views/examples/form/rules.vue'),
             meta: {
               title: $t('examples.form.rules'),
@@ -55,7 +55,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormDynamicExample',
-            path: 'dynamic',
+            path: '/examples/form/dynamic',
             component: () => import('#/views/examples/form/dynamic.vue'),
             meta: {
               title: $t('examples.form.dynamic'),
@@ -63,7 +63,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormLayoutExample',
-            path: 'custom-layout',
+            path: '/examples/form/custom-layout',
             component: () => import('#/views/examples/form/custom-layout.vue'),
             meta: {
               title: $t('examples.form.layout'),
@@ -71,7 +71,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormCustomExample',
-            path: 'custom',
+            path: '/examples/form/custom',
             component: () => import('#/views/examples/form/custom.vue'),
             meta: {
               title: $t('examples.form.custom'),
@@ -79,7 +79,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormApiExample',
-            path: 'api',
+            path: '/examples/form/api',
             component: () => import('#/views/examples/form/api.vue'),
             meta: {
               title: $t('examples.form.api'),
@@ -87,7 +87,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormMergeExample',
-            path: 'merge',
+            path: '/examples/form/merge',
             component: () => import('#/views/examples/form/merge.vue'),
             meta: {
               title: $t('examples.form.merge'),
@@ -95,7 +95,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormScrollToErrorExample',
-            path: 'scroll-to-error-test',
+            path: '/examples/form/scroll-to-error-test',
             component: () =>
               import('#/views/examples/form/scroll-to-error-test.vue'),
             meta: {
@@ -104,34 +104,17 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FormCollapsibleExample',
-            path: 'collapsible-test',
+            path: '/examples/form/collapsible-test',
             component: () => import('#/views/examples/form/collapsible.vue'),
             meta: {
               title: $t('examples.form.collapsible'),
-            },
-          },
-          {
-            name: 'FormLabelWidthExample',
-            path: 'label-width',
-            component: () => import('#/views/examples/form/label-width.vue'),
-            meta: {
-              title: $t('examples.form.labelWidth'),
-            },
-          },
-          {
-            name: 'FormArrayDemo',
-            path: '/form-array-demo',
-            component: () => import('#/views/demos/form-array/index.vue'),
-            meta: {
-              icon: 'lucide:list-plus',
-              title: '表单数组 Demo',
             },
           },
         ],
       },
       {
         name: 'VxeTableExample',
-        path: 'vxe-table',
+        path: '/examples/vxe-table',
         meta: {
           icon: 'lucide:table',
           title: $t('examples.vxeTable.title'),
@@ -139,7 +122,7 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             name: 'VxeTableBasicExample',
-            path: 'basic',
+            path: '/examples/vxe-table/basic',
             component: () => import('#/views/examples/vxe-table/basic.vue'),
             meta: {
               title: $t('examples.vxeTable.basic'),
@@ -147,7 +130,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableRemoteExample',
-            path: 'remote',
+            path: '/examples/vxe-table/remote',
             component: () => import('#/views/examples/vxe-table/remote.vue'),
             meta: {
               title: $t('examples.vxeTable.remote'),
@@ -155,7 +138,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableTreeExample',
-            path: 'tree',
+            path: '/examples/vxe-table/tree',
             component: () => import('#/views/examples/vxe-table/tree.vue'),
             meta: {
               title: $t('examples.vxeTable.tree'),
@@ -163,7 +146,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableFixedExample',
-            path: 'fixed',
+            path: '/examples/vxe-table/fixed',
             component: () => import('#/views/examples/vxe-table/fixed.vue'),
             meta: {
               title: $t('examples.vxeTable.fixed'),
@@ -171,7 +154,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableCustomCellExample',
-            path: 'custom-cell',
+            path: '/examples/vxe-table/custom-cell',
             component: () =>
               import('#/views/examples/vxe-table/custom-cell.vue'),
             meta: {
@@ -180,7 +163,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableFormExample',
-            path: 'form',
+            path: '/examples/vxe-table/form',
             component: () => import('#/views/examples/vxe-table/form.vue'),
             meta: {
               title: $t('examples.vxeTable.form'),
@@ -188,7 +171,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableEditCellExample',
-            path: 'edit-cell',
+            path: '/examples/vxe-table/edit-cell',
             component: () => import('#/views/examples/vxe-table/edit-cell.vue'),
             meta: {
               title: $t('examples.vxeTable.editCell'),
@@ -196,7 +179,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableEditRowExample',
-            path: 'edit-row',
+            path: '/examples/vxe-table/edit-row',
             component: () => import('#/views/examples/vxe-table/edit-row.vue'),
             meta: {
               title: $t('examples.vxeTable.editRow'),
@@ -204,7 +187,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableVirtualExample',
-            path: 'virtual',
+            path: '/examples/vxe-table/virtual',
             component: () => import('#/views/examples/vxe-table/virtual.vue'),
             meta: {
               title: $t('examples.vxeTable.virtual'),
@@ -212,7 +195,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VxeTableViewedExample',
-            path: 'viewed',
+            path: '/examples/vxe-table/viewed',
             component: () => import('#/views/examples/vxe-table/viewed.vue'),
             meta: {
               title: $t('examples.vxeTable.viewed'),
@@ -222,7 +205,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'CaptchaExample',
-        path: 'captcha',
+        path: '/examples/captcha',
         meta: {
           icon: 'logos:recaptcha',
           title: $t('examples.captcha.title'),
@@ -230,7 +213,7 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             name: 'DragVerifyExample',
-            path: 'slider',
+            path: '/examples/captcha/slider',
             component: () =>
               import('#/views/examples/captcha/slider-captcha.vue'),
             meta: {
@@ -239,7 +222,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'RotateVerifyExample',
-            path: 'slider-rotate',
+            path: '/examples/captcha/slider-rotate',
             component: () =>
               import('#/views/examples/captcha/slider-rotate-captcha.vue'),
             meta: {
@@ -248,7 +231,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'TranslateVerifyExample',
-            path: 'slider-translate',
+            path: '/examples/captcha/slider-translate',
             component: () =>
               import('#/views/examples/captcha/slider-translate-captcha.vue'),
             meta: {
@@ -257,7 +240,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'CaptchaPointSelectionExample',
-            path: 'point-selection',
+            path: '/examples/captcha/point-selection',
             component: () =>
               import('#/views/examples/captcha/point-selection-captcha.vue'),
             meta: {
@@ -268,7 +251,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'ModalExample',
-        path: 'modal',
+        path: '/examples/modal',
         component: () => import('#/views/examples/modal/index.vue'),
         meta: {
           icon: 'system-uicons:window-content',
@@ -278,7 +261,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'DrawerExample',
-        path: 'drawer',
+        path: '/examples/drawer',
         component: () => import('#/views/examples/drawer/index.vue'),
         meta: {
           icon: 'iconoir:drawer',
@@ -288,7 +271,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'EllipsisExample',
-        path: 'ellipsis',
+        path: '/examples/ellipsis',
         component: () => import('#/views/examples/ellipsis/index.vue'),
         meta: {
           icon: 'ion:ellipsis-horizontal',
@@ -297,7 +280,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'VueResizeDemo',
-        path: 'resize/basic',
+        path: '/demos/resize/basic',
         component: () => import('#/views/examples/resize/basic.vue'),
         meta: {
           icon: 'material-symbols:resize',
@@ -306,7 +289,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'ColPageDemo',
-        path: 'layout/col-page',
+        path: '/examples/layout/col-page',
         component: () => import('#/views/examples/layout/col-page.vue'),
         meta: {
           badge: 'Alpha',
@@ -317,7 +300,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'TippyDemo',
-        path: 'tippy',
+        path: '/examples/tippy',
         component: () => import('#/views/examples/tippy/index.vue'),
         meta: {
           icon: 'mdi:message-settings-outline',
@@ -326,7 +309,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'JsonViewer',
-        path: 'json-viewer',
+        path: '/examples/json-viewer',
         component: () => import('#/views/examples/json-viewer/index.vue'),
         meta: {
           icon: 'tabler:json',
@@ -335,7 +318,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'Motion',
-        path: 'motion',
+        path: '/examples/motion',
         component: () => import('#/views/examples/motion/index.vue'),
         meta: {
           icon: 'mdi:animation-play',
@@ -344,7 +327,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'CountTo',
-        path: 'count-to',
+        path: '/examples/count-to',
         component: () => import('#/views/examples/count-to/index.vue'),
         meta: {
           icon: 'mdi:animation-play',
@@ -353,7 +336,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'Loading',
-        path: 'loading',
+        path: '/examples/loading',
         component: () => import('#/views/examples/loading/index.vue'),
         meta: {
           icon: 'mdi:circle-double',
@@ -362,7 +345,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'ButtonGroup',
-        path: 'button-group',
+        path: '/examples/button-group',
         component: () => import('#/views/examples/button-group/index.vue'),
         meta: {
           icon: 'mdi:check-circle',
@@ -371,7 +354,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'ContextMenu',
-        path: 'context-menu',
+        path: '/examples/context-menu',
         component: () => import('#/views/examples/context-menu/index.vue'),
         meta: {
           icon: 'mdi:menu',
@@ -380,7 +363,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'CropperDemo',
-        path: 'cropper',
+        path: '/examples/cropper',
         component: () => import('#/views/examples/cropper/index.vue'),
         meta: {
           icon: 'mdi:crop',
@@ -389,7 +372,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'TiptapExample',
-        path: 'tiptap',
+        path: '/examples/tiptap',
         component: () => import('#/views/examples/tiptap/index.vue'),
         meta: {
           icon: 'lucide:square-pen',

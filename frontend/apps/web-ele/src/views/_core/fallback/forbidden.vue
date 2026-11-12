@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import { Fallback } from '@vben/common-ui';
 
-defineOptions({ name: 'Fallback403Demo' });
+defineOptions({ name: 'VidCraftFallbackForbidden' });
 </script>
 
 <template>
-  <Fallback status="403" />
+  <Fallback
+    :description="$t('vidcraft.fallback.forbiddenDesc')"
+    home-path="/dashboard"
+    :title="$t('vidcraft.fallback.forbiddenTitle')"
+    status="403"
+  />
 </template>

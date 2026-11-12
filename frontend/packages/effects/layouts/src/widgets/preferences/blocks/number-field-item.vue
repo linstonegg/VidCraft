@@ -33,7 +33,7 @@ withDefaults(
   },
 );
 
-const inputValue = defineModel<number | undefined>({ default: undefined });
+const inputValue = defineModel<number>();
 
 const slots = useSlots();
 </script>

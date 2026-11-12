@@ -1,0 +1,141 @@
+{
+  "appName": "VidCraft",
+  "appSubtitle": "AI Creative Marketing Video Agent",
+  "dashboardMenu": "Workbench",
+  "projects": "Projects",
+  "projectsNew": "New project",
+  "assets": "Assets",
+  "tasks": "Generation jobs",
+  "billing": "Credits & billing",
+  "settings": "Settings",
+  "studio": "AI Studio",
+  "mockBanner": "All project data, AI output, generation jobs and billing records are simulated. No real model is called and no fee is charged.",
+  "mockBadge": "Mock",
+  "backToProjects": "Back to projects",
+  "common": {
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "search": "Search",
+    "resetDemo": "Reset demo data",
+    "loading": "Loading…",
+    "empty": "No data",
+    "notAvailable": "Not available yet",
+    "goBack": "Back"
+  },
+  "states": {
+    "loading": "Loading demo data…",
+    "emptyTitle": "Nothing here yet",
+    "emptyDesc": "M0 only ships the engineering skeleton; real modules arrive in M1.",
+    "errorTitle": "Demo service is unavailable",
+    "errorDesc": "Make sure the Nitro mock service is running, then retry.",
+    "forbiddenTitle": "The current demo role cannot open this page",
+    "notFoundTitle": "Project not found",
+    "notFoundDesc": "Return to the project center and pick another demo project.",
+    "projectNotFound": "Project not found"
+  },
+  "dashboard": {
+    "title": "VidCraft workbench",
+    "subtitle": "Demo environment: the full flow from product URL to creative, storyboard and final video arrives in M1–M4.",
+    "projectTotal": "Demo projects",
+    "inProgress": "In progress",
+    "mockHealth": "Mock service",
+    "mockHealthOk": "Mock service available",
+    "mockHealthFailed": "Mock service unavailable",
+    "healthChecking": "Checking mock service…",
+    "startDemo": "Start the demo path",
+    "startDemoDesc": "Login → projects → 3D resume project → fullscreen Studio with eight stages.",
+    "goProjects": "Go to projects",
+    "roleScope": "Current demo role",
+    "roleScopeDesc": "Role differences are a UI demo only, not a real security boundary.",
+    "nextMilestone": "Next milestone",
+    "nextMilestoneDesc": "New project and product intake (/projects/new, /studio/:id/ingest)."
+  },
+  "projectsPage": {
+    "title": "Projects",
+    "subtitle": "Fixed demo seeds served by the Nitro mock over HTTP.",
+    "searchPlaceholder": "Search by project name or description",
+    "resetSuccess": "Demo data has been restored",
+    "listLoaded": "Projects loaded",
+    "openStudio": "Open Studio",
+    "newProject": "New project",
+    "emptyTitle": "No projects yet",
+    "emptyDesc": "M0 projects come from the mock service; reset the demo data to restore the seeds.",
+    "duration": "Target duration",
+    "stage": "Current stage",
+    "platform": "Platform",
+    "updatedAt": "Updated",
+    "count": "{total} demo projects"
+  },
+  "stage": {
+    "INGEST": "Intake",
+    "UNDERSTANDING": "Understanding",
+    "ANGLES": "Angles",
+    "SCRIPT": "Script",
+    "STORYBOARD": "Storyboard",
+    "ANIMATIC": "Animatic",
+    "GENERATE": "Shots",
+    "RENDER": "Render"
+  },
+  "stageDesc": {
+    "INGEST": "Product URL, demo authorization, screen recording, images and documents.",
+    "UNDERSTANDING": "Verified facts, personas, assumptions and evidence levels.",
+    "ANGLES": "Marketing angle discovery and three differentiated creative options.",
+    "SCRIPT": "Duration evaluation and full story beat script for 30/60/120 seconds.",
+    "STORYBOARD": "Per-shot reference image, line, action, duration and transition.",
+    "ANIMATIC": "Low-cost full-film preview and ordering.",
+    "GENERATE": "Single shot generation, candidate comparison and review.",
+    "RENDER": "Final composition, render versions and export."
+  },
+  "fallback": {
+    "notFoundTitle": "Page not found",
+    "notFoundDesc": "Check the address, or return to the workbench and pick another demo project.",
+    "forbiddenTitle": "The current demo role cannot open this page",
+    "forbiddenDesc": "Switch the demo role and try again. M0 permissions are a UI demo, not server-side authorization.",
+    "errorTitle": "Demo service is temporarily unavailable",
+    "errorDesc": "Try again later; if it keeps failing, make sure the Nitro mock service is running.",
+    "offlineTitle": "Network disconnected",
+    "offlineDesc": "Check your connection and refresh the page."
+  },
+  "status": {
+    "DRAFT": "Draft",
+    "IN_PROGRESS": "In progress",
+    "WAITING_REVIEW": "Waiting review",
+    "COMPLETED": "Completed",
+    "ARCHIVED": "Archived"
+  },
+  "platform": {
+    "douyin": "Douyin",
+    "wechat_channels": "WeChat Channels",
+    "bilibili": "Bilibili",
+    "tiktok": "TikTok",
+    "website": "Website",
+    "sales": "Sales deck",
+    "other": "Other"
+  },
+  "placeholder": {
+    "badge": "M0 placeholder",
+    "title": "{stage} is not implemented yet",
+    "desc": "M0 only reserves routes, layout and data boundaries. Real modules arrive in M1/M2; no fake buttons.",
+    "projectLabel": "Current project",
+    "planned": "Planned for",
+    "plannedMilestone": "M1",
+    "backToIngest": "Back to intake"
+  },
+  "studioShell": {
+    "saveStatus": "Mock mode: business state is saved; uploaded file contents remain local",
+    "roleLabel": "Role",
+    "logout": "Sign out"
+  },
+  "pages": {
+    "assetsTitle": "Assets",
+    "assetsDesc": "Asset upload, classification and references arrive later.",
+    "tasksTitle": "Generation jobs",
+    "tasksDesc": "Async jobs, retries and failure release arrive later.",
+    "billingTitle": "Credits & billing",
+    "billingDesc": "Quotes, holds, settlement and ledger arrive in M3; no real fee today.",
+    "modelsTitle": "Model settings",
+    "modelsDesc": "Video models and generation parameters are designed before real integration.",
+    "brandTitle": "Brand settings",
+    "brandDesc": "Brand assets, tone and watermark rules arrive in M2."
+  }
+}

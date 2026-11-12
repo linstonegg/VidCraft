@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Dayjs } from 'dayjs';
-
 import type { Recordable } from '@vben/types';
 
 import type {
@@ -17,22 +15,9 @@ import { Button, message, Modal } from 'antdv-next';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteRole, getRoleList, updateRole } from '#/api';
 import { $t } from '#/locales';
-import { createDateRangeCodec } from '#/utils/date-range-codec';
 
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
-
-interface RoleSearchFormValues extends Record<string, unknown> {
-  createTime?: [Dayjs, Dayjs];
-}
-
-const roleSearchCodec = createDateRangeCodec<RoleSearchFormValues>()({
-  endField: 'endTime',
-  rangeField: 'createTime',
-  startField: 'startTime',
-});
-
-type RoleSearchSubmitValues = ReturnType<typeof roleSearchCodec.encode>;
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -41,7 +26,7 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    codec: roleSearchCodec,
+    fieldMappingTime: [['createTime', ['startTime', 'endTime']]],
     schema: useGridFormSchema(),
     submitOnChange: true,
   },
@@ -51,7 +36,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        query: async ({ page }, formValues: RoleSearchSubmitValues) => {
+        query: async ({ page }, formValues) => {
           return await getRoleList({
             page: page.currentPage,
             pageSize: page.pageSize,
@@ -161,7 +146,7 @@ function onRefresh() {
 }
 
 function onCreate() {
-  formDrawerApi.setData(null).open();
+  formDrawerApi.setData({}).open();
 }
 </script>
 <template>

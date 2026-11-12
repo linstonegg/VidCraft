@@ -21,11 +21,11 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.access.frontendPermissions'),
         },
         name: 'AccessDemos',
-        path: 'access',
+        path: '/demos/access',
         children: [
           {
             name: 'AccessPageControlDemo',
-            path: 'page-control',
+            path: '/demos/access/page-control',
             component: () => import('#/views/demos/access/index.vue'),
             meta: {
               icon: 'mdi:page-previous-outline',
@@ -35,7 +35,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'AccessButtonControlDemo',
-            path: 'button-control',
+            path: '/demos/access/button-control',
             component: () => import('#/views/demos/access/button-control.vue'),
             meta: {
               icon: 'mdi:button-cursor',
@@ -44,7 +44,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'AccessMenuVisible403Demo',
-            path: 'menu-visible-403',
+            path: '/demos/access/menu-visible-403',
             component: () =>
               import('#/views/demos/access/menu-visible-403.vue'),
             meta: {
@@ -56,7 +56,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'AccessSuperVisibleDemo',
-            path: 'super-visible',
+            path: '/demos/access/super-visible',
             component: () => import('#/views/demos/access/super-visible.vue'),
             meta: {
               authority: ['super'],
@@ -66,7 +66,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'AccessAdminVisibleDemo',
-            path: 'admin-visible',
+            path: '/demos/access/admin-visible',
             component: () => import('#/views/demos/access/admin-visible.vue'),
             meta: {
               authority: ['admin'],
@@ -76,7 +76,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'AccessUserVisibleDemo',
-            path: 'user-visible',
+            path: '/demos/access/user-visible',
             component: () => import('#/views/demos/access/user-visible.vue'),
             meta: {
               authority: ['user'],
@@ -93,11 +93,11 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.features.title'),
         },
         name: 'FeaturesDemos',
-        path: 'features',
+        path: '/demos/features',
         children: [
           {
             name: 'LoginExpiredDemo',
-            path: 'login-expired',
+            path: '/demos/features/login-expired',
             component: () =>
               import('#/views/demos/features/login-expired/index.vue'),
             meta: {
@@ -107,7 +107,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'IconsDemo',
-            path: 'icons',
+            path: '/demos/features/icons',
             component: () => import('#/views/demos/features/icons/index.vue'),
             meta: {
               icon: 'lucide:annoyed',
@@ -116,7 +116,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'WatermarkDemo',
-            path: 'watermark',
+            path: '/demos/features/watermark',
             component: () =>
               import('#/views/demos/features/watermark/index.vue'),
             meta: {
@@ -126,7 +126,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'PreferencesExtensionDemo',
-            path: 'preferences-extension',
+            path: '/demos/features/preferences-extension',
             component: () =>
               import('#/views/demos/features/preferences-extension/index.vue'),
             meta: {
@@ -136,7 +136,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FeatureTabsDemo',
-            path: 'tabs',
+            path: '/demos/features/tabs',
             component: () => import('#/views/demos/features/tabs/index.vue'),
             meta: {
               icon: 'lucide:app-window',
@@ -145,7 +145,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FeatureTabDetailDemo',
-            path: 'detail/:id',
+            path: '/demos/features/tabs/detail/:id',
             component: () =>
               import('#/views/demos/features/tabs/tab-detail.vue'),
             meta: {
@@ -157,7 +157,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'HideChildrenInMenuParentDemo',
-            path: 'hide-menu-children',
+            path: '/demos/features/hide-menu-children',
             meta: {
               hideChildrenInMenu: true,
               icon: 'ic:round-menu',
@@ -176,7 +176,7 @@ const routes: RouteRecordRaw[] = [
               },
               {
                 name: 'HideChildrenInMenuChildrenDemo',
-                path: 'children',
+                path: '/demos/features/hide-menu-children/children',
                 component: () =>
                   import('#/views/demos/features/hide-menu-children/children.vue'),
                 meta: {
@@ -188,7 +188,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FullScreenDemo',
-            path: 'full-screen',
+            path: '/demos/features/full-screen',
             component: () =>
               import('#/views/demos/features/full-screen/index.vue'),
             meta: {
@@ -198,7 +198,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FileDownloadDemo',
-            path: 'file-download',
+            path: '/demos/features/file-download',
             component: () =>
               import('#/views/demos/features/file-download/index.vue'),
             meta: {
@@ -208,7 +208,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'ClipboardDemo',
-            path: 'clipboard',
+            path: '/demos/features/clipboard',
             component: () =>
               import('#/views/demos/features/clipboard/index.vue'),
             meta: {
@@ -218,7 +218,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'MenuQueryDemo',
-            path: 'menu-query',
+            path: '/demos/menu-query',
             component: () =>
               import('#/views/demos/features/menu-query/index.vue'),
             meta: {
@@ -231,7 +231,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'NewWindowDemo',
-            path: 'new-window',
+            path: '/demos/new-window',
             component: () =>
               import('#/views/demos/features/new-window/index.vue'),
             meta: {
@@ -242,7 +242,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'VueQueryDemo',
-            path: 'vue-query',
+            path: '/demos/features/vue-query',
             component: () =>
               import('#/views/demos/features/vue-query/index.vue'),
             meta: {
@@ -252,7 +252,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'RequestParamsSerializerDemo',
-            path: 'request-params-serializer',
+            path: '/demos/features/request-params-serializer',
             component: () =>
               import('#/views/demos/features/request-params-serializer/index.vue'),
             meta: {
@@ -262,7 +262,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'BigIntDemo',
-            path: 'json-bigint',
+            path: '/demos/features/json-bigint',
             component: () =>
               import('#/views/demos/features/json-bigint/index.vue'),
             meta: {
@@ -275,7 +275,7 @@ const routes: RouteRecordRaw[] = [
       // 面包屑导航
       {
         name: 'BreadcrumbDemos',
-        path: 'breadcrumb',
+        path: '/demos/breadcrumb',
         meta: {
           icon: 'lucide:navigation',
           title: $t('demos.breadcrumb.navigation'),
@@ -283,7 +283,7 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             name: 'BreadcrumbLateralDemo',
-            path: 'lateral',
+            path: '/demos/breadcrumb/lateral',
             component: () => import('#/views/demos/breadcrumb/lateral.vue'),
             meta: {
               icon: 'lucide:navigation',
@@ -292,7 +292,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'BreadcrumbLateralDetailDemo',
-            path: 'lateral-detail',
+            path: '/demos/breadcrumb/lateral-detail',
             component: () =>
               import('#/views/demos/breadcrumb/lateral-detail.vue'),
             meta: {
@@ -303,7 +303,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'BreadcrumbLevelDemo',
-            path: 'level',
+            path: '/demos/breadcrumb/level',
             meta: {
               icon: 'lucide:navigation',
               title: $t('demos.breadcrumb.level'),
@@ -311,7 +311,7 @@ const routes: RouteRecordRaw[] = [
             children: [
               {
                 name: 'BreadcrumbLevelDetailDemo',
-                path: 'detail',
+                path: '/demos/breadcrumb/level/detail',
                 component: () =>
                   import('#/views/demos/breadcrumb/level-detail.vue'),
                 meta: {
@@ -329,11 +329,11 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.fallback.title'),
         },
         name: 'FallbackDemos',
-        path: 'fallback',
+        path: '/demos/fallback',
         children: [
           {
             name: 'Fallback403Demo',
-            path: '403',
+            path: '/demos/fallback/403',
             component: () => import('#/views/_core/fallback/forbidden.vue'),
             meta: {
               icon: 'mdi:do-not-disturb-alt',
@@ -342,7 +342,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'Fallback404Demo',
-            path: '404',
+            path: '/demos/fallback/404',
             component: () => import('#/views/_core/fallback/not-found.vue'),
             meta: {
               icon: 'mdi:table-off',
@@ -351,7 +351,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'Fallback500Demo',
-            path: '500',
+            path: '/demos/fallback/500',
             component: () =>
               import('#/views/_core/fallback/internal-error.vue'),
             meta: {
@@ -361,7 +361,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'FallbackOfflineDemo',
-            path: 'offline',
+            path: '/demos/fallback/offline',
             component: () => import('#/views/_core/fallback/offline.vue'),
             meta: {
               icon: 'mdi:offline',
@@ -379,12 +379,12 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.badge.title'),
         },
         name: 'BadgeDemos',
-        path: 'badge',
+        path: '/demos/badge',
         children: [
           {
             name: 'BadgeDotDemo',
             component: () => import('#/views/demos/badge/index.vue'),
-            path: 'dot',
+            path: '/demos/badge/dot',
             meta: {
               badgeType: 'dot',
               icon: 'lucide:square-dot',
@@ -394,7 +394,7 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'BadgeTextDemo',
             component: () => import('#/views/demos/badge/index.vue'),
-            path: 'text',
+            path: '/demos/badge/text',
             meta: {
               badge: '10',
               icon: 'lucide:square-dot',
@@ -404,7 +404,7 @@ const routes: RouteRecordRaw[] = [
           {
             name: 'BadgeColorDemo',
             component: () => import('#/views/demos/badge/index.vue'),
-            path: 'color',
+            path: '/demos/badge/color',
             meta: {
               badge: 'Hot',
               badgeVariants: 'destructive',
@@ -422,12 +422,12 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.activeIcon.title'),
         },
         name: 'ActiveIconDemos',
-        path: 'active-icon',
+        path: '/demos/active-icon',
         children: [
           {
             name: 'ActiveIconDemo',
             component: () => import('#/views/demos/active-icon/index.vue'),
-            path: 'children',
+            path: '/demos/active-icon/children',
             meta: {
               activeIcon: 'fluent-emoji:radioactive',
               icon: 'bi:radioactive',
@@ -443,11 +443,11 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.outside.title'),
         },
         name: 'OutsideDemos',
-        path: 'outside',
+        path: '/demos/outside',
         children: [
           {
             name: 'IframeDemos',
-            path: 'iframe',
+            path: '/demos/outside/iframe',
             meta: {
               icon: 'mdi:newspaper-variant-outline',
               title: $t('demos.outside.embedded'),
@@ -455,7 +455,7 @@ const routes: RouteRecordRaw[] = [
             children: [
               {
                 name: 'VueDocumentDemo',
-                path: 'vue-document',
+                path: '/demos/outside/iframe/vue-document',
                 component: IFrameView,
                 meta: {
                   icon: 'logos:vue',
@@ -466,7 +466,7 @@ const routes: RouteRecordRaw[] = [
               },
               {
                 name: 'TailwindcssDemo',
-                path: 'tailwindcss',
+                path: '/demos/outside/iframe/tailwindcss',
                 component: IFrameView,
                 meta: {
                   icon: 'devicon:tailwindcss',
@@ -479,7 +479,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'ExternalLinkDemos',
-            path: 'external-link',
+            path: '/demos/outside/external-link',
             meta: {
               icon: 'mdi:newspaper-variant-multiple-outline',
               title: $t('demos.outside.externalLink'),
@@ -487,7 +487,7 @@ const routes: RouteRecordRaw[] = [
             children: [
               {
                 name: 'ViteDemo',
-                path: 'vite',
+                path: '/demos/outside/external-link/vite',
                 component: IFrameView,
                 meta: {
                   icon: 'logos:vitejs',
@@ -497,7 +497,7 @@ const routes: RouteRecordRaw[] = [
               },
               {
                 name: 'VueUseDemo',
-                path: 'vue-use',
+                path: '/demos/outside/external-link/vue-use',
                 component: IFrameView,
                 meta: {
                   icon: 'logos:vueuse',
@@ -516,11 +516,11 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.nested.title'),
         },
         name: 'NestedDemos',
-        path: 'nested',
+        path: '/demos/nested',
         children: [
           {
             name: 'Menu1Demo',
-            path: 'menu1',
+            path: '/demos/nested/menu1',
             component: () => import('#/views/demos/nested/menu-1.vue'),
             meta: {
               icon: 'ic:round-menu',
@@ -530,7 +530,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'Menu2Demo',
-            path: 'menu2',
+            path: '/demos/nested/menu2',
             meta: {
               icon: 'ic:round-menu',
               keepAlive: true,
@@ -539,7 +539,7 @@ const routes: RouteRecordRaw[] = [
             children: [
               {
                 name: 'Menu21Demo',
-                path: 'menu2-1',
+                path: '/demos/nested/menu2/menu2-1',
                 component: () => import('#/views/demos/nested/menu-2-1.vue'),
                 meta: {
                   icon: 'ic:round-menu',
@@ -551,7 +551,7 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'Menu3Demo',
-            path: 'menu3',
+            path: '/demos/nested/menu3',
             meta: {
               icon: 'ic:round-menu',
               title: $t('demos.nested.menu3'),
@@ -559,7 +559,7 @@ const routes: RouteRecordRaw[] = [
             children: [
               {
                 name: 'Menu31Demo',
-                path: 'menu3-1',
+                path: '/demos/nested/menu3/menu3-1',
                 component: () => import('#/views/demos/nested/menu-3-1.vue'),
                 meta: {
                   icon: 'ic:round-menu',
@@ -569,7 +569,7 @@ const routes: RouteRecordRaw[] = [
               },
               {
                 name: 'Menu32Demo',
-                path: 'menu3-2',
+                path: '/demos/nested/menu3/menu3-2',
                 meta: {
                   icon: 'ic:round-menu',
                   title: $t('demos.nested.menu3_2'),
@@ -577,7 +577,7 @@ const routes: RouteRecordRaw[] = [
                 children: [
                   {
                     name: 'Menu321Demo',
-                    path: 'menu3-2-1',
+                    path: '/demos/nested/menu3/menu3-2/menu3-2-1',
                     component: () =>
                       import('#/views/demos/nested/menu-3-2-1.vue'),
                     meta: {

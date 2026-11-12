@@ -9,7 +9,7 @@ const forwardedProps = useForwardProps(props);
 </script>
 
 <template>
-  <ContextMenuTrigger data-slot="context-menu-trigger" v-bind="forwardedProps">
+  <ContextMenuTrigger v-bind="forwardedProps">
     <slot></slot>
   </ContextMenuTrigger>
 </template>

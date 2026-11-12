@@ -2,25 +2,15 @@
 import { computed, useSlots } from 'vue';
 
 import { useRefresh } from '@vben/hooks';
-import { LockKeyhole, LogOut, RotateCw } from '@vben/icons';
-import { $t } from '@vben/locales';
+import { RotateCw } from '@vben/icons';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore } from '@vben/stores';
 
-import { useVbenModal } from '@vben-core/popup-ui';
-import {
-  VbenFullScreen,
-  VbenIconButton,
-  VbenTooltip,
-} from '@vben-core/shadcn-ui';
-
-import { useMagicKeys, whenever } from '@vueuse/core';
+import { VbenFullScreen, VbenIconButton } from '@vben-core/shadcn-ui';
 
 import {
   GlobalSearch,
   LanguageToggle,
-  LockScreenModal,
-  Notification,
   PreferencesButton,
   ThemeToggle,
   TimezoneButton,
@@ -28,17 +18,9 @@ import {
 
 interface Props {
   /**
-   * 头像
-   */
-  avatar?: string;
-  /**
    * Logo 主题
    */
   theme?: string;
-  /**
-   * 用户文本
-   */
-  text?: string;
 }
 
 defineOptions({
@@ -46,96 +28,17 @@ defineOptions({
 });
 
 withDefaults(defineProps<Props>(), {
-  avatar: '',
   theme: 'light',
-  text: '',
 });
 
-const emit = defineEmits<{
-  clearPreferencesAndLogout: [];
-  logout: [];
-  openLockScreen: [];
-}>();
+const emit = defineEmits<{ clearPreferencesAndLogout: [] }>();
 
 const REFERENCE_VALUE = 100;
 
 const accessStore = useAccessStore();
-const {
-  globalLockScreenShortcutKey,
-  globalLogoutShortcutKey,
-  globalSearchShortcutKey,
-  preferencesButtonPosition,
-} = usePreferences();
+const { globalSearchShortcutKey, preferencesButtonPosition } = usePreferences();
 const slots = useSlots();
 const { refresh } = useRefresh();
-
-const showLockInHeader = computed(
-  () =>
-    preferences.widget.lockScreen &&
-    preferences.widget.lockScreenButtonPosition === 'header',
-);
-
-const showLogoutInHeader = computed(
-  () => preferences.widget.logoutButtonPosition === 'header',
-);
-
-const enableLockScreenShortcutKey = computed(() => {
-  return showLockInHeader.value && globalLockScreenShortcutKey.value;
-});
-
-const enableLogoutShortcutKey = computed(() => {
-  return showLogoutInHeader.value && globalLogoutShortcutKey.value;
-});
-
-const [LockModal, lockModalApi] = useVbenModal({
-  connectedComponent: LockScreenModal,
-});
-const [LogoutModal, logoutModalApi] = useVbenModal({
-  onConfirm() {
-    handleSubmitLogout();
-  },
-});
-
-function handleOpenLock() {
-  lockModalApi.open();
-}
-
-function handleSubmitLock(lockScreenPassword: string) {
-  lockModalApi.close();
-  accessStore.lockScreen(lockScreenPassword);
-}
-
-function handleLogout() {
-  logoutModalApi.open();
-}
-
-function handleSubmitLogout() {
-  emit('logout');
-  logoutModalApi.close();
-}
-
-// 快捷键
-if (preferences.shortcutKeys.enable) {
-  const keys = useMagicKeys();
-  const lockKey = keys['Alt+KeyL'];
-  const logoutKey = keys['Alt+KeyQ'];
-
-  if (lockKey) {
-    whenever(lockKey, () => {
-      if (enableLockScreenShortcutKey.value) {
-        handleOpenLock();
-      }
-    });
-  }
-
-  if (logoutKey) {
-    whenever(logoutKey, () => {
-      if (enableLogoutShortcutKey.value) {
-        handleLogout();
-      }
-    });
-  }
-}
 
 /**
  * 插槽列表类型
@@ -144,77 +47,58 @@ type SlotItem = { index: number; name: string };
 
 const rightSlots = computed(() => {
   const list: Array<SlotItem> = [];
-
-  // 按 widget.order 顺序遍历，检查每个部件是否应在 header 中显示
-  const widgetChecks: Record<string, { slotName: string; visible: boolean }> = {
-    globalSearch: {
-      visible:
-        preferences.widget.globalSearch &&
-        preferences.widget.globalSearchButtonPosition === 'header',
-      slotName: 'global-search',
-    },
-    preferences: {
-      visible: preferencesButtonPosition.value.header,
-      slotName: 'preferences',
-    },
-    themeToggle: {
-      visible:
-        preferences.widget.themeToggle &&
-        preferences.widget.themeToggleButtonPosition === 'header',
-      slotName: 'theme-toggle',
-    },
-    languageToggle: {
-      visible:
-        preferences.widget.languageToggle &&
-        preferences.widget.languageToggleButtonPosition === 'header',
-      slotName: 'language-toggle',
-    },
-    timezone: {
-      visible:
-        preferences.widget.timezone &&
-        preferences.widget.timezoneButtonPosition === 'header',
-      slotName: 'timezone',
-    },
-    fullscreen: {
-      visible:
-        preferences.widget.fullscreen &&
-        preferences.widget.fullscreenButtonPosition === 'header',
-      slotName: 'fullscreen',
-    },
-    refresh: {
-      visible:
-        preferences.widget.refresh &&
-        preferences.widget.refreshButtonPosition === 'header',
-      slotName: 'refresh',
-    },
-    notification: {
-      visible:
-        preferences.widget.notification &&
-        preferences.widget.notificationButtonPosition === 'header',
-      slotName: 'notification',
-    },
-    lockScreenBtn: {
-      visible:
-        preferences.widget.lockScreen &&
-        preferences.widget.lockScreenButtonPosition === 'header',
-      slotName: 'lock-screen-btn',
-    },
-    logoutBtn: {
-      visible: preferences.widget.logoutButtonPosition === 'header',
-      slotName: 'logout-btn',
-    },
-  };
-
-  for (const key of preferences.widget.order) {
-    const check = widgetChecks[key];
-    if (check?.visible) {
-      list.push({ index: REFERENCE_VALUE + list.length, name: check.slotName });
+  // 全局搜索
+  if (preferences.widget.globalSearch) {
+    list.push({
+      index: REFERENCE_VALUE,
+      name: 'global-search',
+    });
+  }
+  // 偏好设置快捷功能
+  if (preferencesButtonPosition.value.header) {
+    list.push({
+      index: REFERENCE_VALUE + 10,
+      name: 'preferences',
+    });
+    // 将偏好设置中的子功能分组到同一个按钮位置控制逻辑下
+    if (preferences.widget.themeToggle) {
+      list.push({
+        index: REFERENCE_VALUE + 20,
+        name: 'theme-toggle',
+      });
+    }
+    if (preferences.widget.languageToggle) {
+      list.push({
+        index: REFERENCE_VALUE + 30,
+        name: 'language-toggle',
+      });
+    }
+    if (preferences.widget.timezone) {
+      list.push({
+        index: REFERENCE_VALUE + 40,
+        name: 'timezone',
+      });
     }
   }
+  // 全屏
+  if (preferences.widget.fullscreen) {
+    list.push({
+      index: REFERENCE_VALUE + 50,
+      name: 'fullscreen',
+    });
+  }
+  // 消息通知
+  if (preferences.widget.notification) {
+    list.push({
+      index: REFERENCE_VALUE + 60,
+      name: 'notification',
+    });
+  }
 
-  // 用户插槽（header-right-N）追加在后面
   Object.keys(slots).forEach((key) => {
+    // 适配插槽名称，例如第一个插槽名：header-right-1
     if (key.startsWith('header-right')) {
+      // 取第三个占位的数字，若是第三个占位不是数字，则自动分配排序索引
       const slotIndex = Number(key.split('-')[2]);
       const index = Number.isNaN(slotIndex) ? nextIndex(list) : slotIndex;
       list.push({ index, name: key });
@@ -229,6 +113,13 @@ const rightSlots = computed(() => {
 
 const leftSlots = computed(() => {
   const list: Array<SlotItem> = [];
+  // 刷新
+  if (preferences.widget.refresh) {
+    list.push({
+      index: 0,
+      name: 'refresh',
+    });
+  }
 
   Object.keys(slots).forEach((key) => {
     // 适配插槽名称，例如第一个插槽名：header-left-1
@@ -259,27 +150,6 @@ function clearPreferencesAndLogout() {
 </script>
 
 <template>
-  <LockModal
-    v-if="showLockInHeader"
-    :avatar="avatar"
-    :text="text"
-    @submit="handleSubmitLock"
-  />
-
-  <LogoutModal
-    v-if="showLogoutInHeader"
-    :cancel-text="$t('common.cancel')"
-    :confirm-text="$t('common.confirm')"
-    :fullscreen-button="false"
-    :title="$t('common.prompt')"
-    centered
-    content-class="px-8 min-h-10"
-    footer-class="border-none mb-3 mr-3"
-    header-class="border-none"
-  >
-    {{ $t('ui.widgets.logoutTip') }}
-  </LogoutModal>
-
   <template
     v-for="slot in leftSlots.filter((item) => item.index < REFERENCE_VALUE)"
     :key="slot.name"
@@ -319,75 +189,22 @@ function clearPreferencesAndLogout() {
         </template>
 
         <template v-else-if="slot.name === 'preferences'">
-          <VbenTooltip side="bottom">
-            <template #trigger>
-              <PreferencesButton
-                class="mr-1"
-                @clear-preferences-and-logout="clearPreferencesAndLogout"
-              />
-            </template>
-            {{ $t('preferences.title') }}
-          </VbenTooltip>
+          <PreferencesButton
+            class="mr-1"
+            @clear-preferences-and-logout="clearPreferencesAndLogout"
+          />
         </template>
         <template v-else-if="slot.name === 'theme-toggle'">
-          <VbenTooltip side="bottom">
-            <template #trigger>
-              <ThemeToggle class="mt-0.5 mr-1" />
-            </template>
-            {{ $t('preferences.theme.title') }}
-          </VbenTooltip>
+          <ThemeToggle class="mt-0.5 mr-1" />
         </template>
         <template v-else-if="slot.name === 'language-toggle'">
-          <VbenTooltip side="bottom">
-            <template #trigger>
-              <LanguageToggle class="mr-1" />
-            </template>
-            {{ $t('preferences.widget.languageToggle') }}
-          </VbenTooltip>
+          <LanguageToggle class="mr-1" />
         </template>
         <template v-else-if="slot.name === 'fullscreen'">
-          <VbenFullScreen
-            class="mr-1"
-            :tooltip="$t('preferences.widget.fullscreen')"
-          />
+          <VbenFullScreen class="mr-1" />
         </template>
         <template v-else-if="slot.name === 'timezone'">
           <TimezoneButton class="mt-0.5 mr-1" />
-        </template>
-        <template v-else-if="slot.name === 'lock-screen-btn'">
-          <VbenIconButton
-            class="mr-1"
-            :tooltip="$t('ui.widgets.lockScreen.title')"
-            @click="handleOpenLock"
-          >
-            <LockKeyhole class="size-4" />
-          </VbenIconButton>
-        </template>
-        <template v-else-if="slot.name === 'logout-btn'">
-          <VbenIconButton
-            class="mr-1"
-            :tooltip="$t('common.logout')"
-            @click="handleLogout"
-          >
-            <LogOut class="size-4" />
-          </VbenIconButton>
-        </template>
-        <template v-else-if="slot.name === 'notification'">
-          <VbenTooltip side="bottom">
-            <template #trigger>
-              <Notification class="mr-1" />
-            </template>
-            {{ $t('preferences.widget.notification') }}
-          </VbenTooltip>
-        </template>
-        <template v-else-if="slot.name === 'refresh'">
-          <VbenIconButton
-            class="my-0 mr-1 rounded-md"
-            :tooltip="$t('preferences.widget.refresh')"
-            @click="refresh"
-          >
-            <RotateCw class="size-4" />
-          </VbenIconButton>
         </template>
       </slot>
     </template>

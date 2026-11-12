@@ -27,9 +27,12 @@ function generateMenus(
     // 获取最终的路由路径
     const path = finalRoutesMap[route.name as string] ?? route.path ?? '';
 
-    const { meta, name: routeName, redirect, children = [] } = route;
-    // vue-router 的 RouteMeta 是宽松索引类型，这里收窄为带字段名的类型再解构。
-    const metaRecord = (meta ?? {}) as RouteMeta;
+    const {
+      meta = {} as RouteMeta,
+      name: routeName,
+      redirect,
+      children = [],
+    } = route;
     const {
       activeIcon,
       badge,
@@ -39,9 +42,9 @@ function generateMenus(
       icon,
       link,
       order,
-      title,
+      title = '',
       query,
-    } = metaRecord;
+    } = meta;
 
     // 确保菜单名称不为空
     const name = (title || routeName || '') as string;
@@ -74,7 +77,7 @@ function generateMenus(
       parent: route.parent,
       parents: route.parents,
       path: resultPath,
-      show: !metaRecord.hideInMenu,
+      show: !meta.hideInMenu,
       children: resultChildren,
     };
   });

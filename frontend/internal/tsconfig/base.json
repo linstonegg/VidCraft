@@ -10,7 +10,7 @@
 
     "module": "ESNext",
 
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
 
     "strict": true,

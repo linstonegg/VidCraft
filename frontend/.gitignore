@@ -23,7 +23,6 @@ package-lock.json
 .VSCodeCounter
 **/backend-mock/data
 .omx
-.pnpm-store
 # local env files
 .env.local
 .env.*.local
@@ -60,4 +59,6 @@ vite.config.ts.*
 skills-lock.json
 .atomcode
 datalog
-.playwright-mcp
+
+# Local VidCraft mock state
+.data/

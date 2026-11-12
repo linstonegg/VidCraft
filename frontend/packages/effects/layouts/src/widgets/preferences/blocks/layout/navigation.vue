@@ -12,12 +12,7 @@ defineOptions({
 
 defineProps<{ disabled?: boolean; disabledNavigationSplit?: boolean }>();
 
-const navigationStyleType = defineModel<string | undefined>(
-  'navigationStyleType',
-  {
-    default: undefined,
-  },
-);
+const navigationStyleType = defineModel<string>('navigationStyleType');
 const navigationSplit = defineModel<boolean>('navigationSplit');
 const navigationAccordion = defineModel<boolean>('navigationAccordion');
 

@@ -12,7 +12,7 @@ withDefaults(defineProps<{ disabled?: boolean; items?: SelectOption[] }>(), {
   items: () => [],
 });
 
-const modelValue = defineModel<string | undefined>({ default: undefined });
+const modelValue = defineModel<string>();
 </script>
 
 <template>

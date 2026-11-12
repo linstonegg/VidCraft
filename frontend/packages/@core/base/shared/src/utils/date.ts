@@ -2,8 +2,6 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone.js';
 import utc from 'dayjs/plugin/utc.js';
 
-import { getErrorMessage } from './error';
-
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -32,7 +30,7 @@ export function formatDate(time?: FormatDate, format: Format = 'YYYY-MM-DD') {
     }
     return date.tz().format(format);
   } catch (error) {
-    console.error(`Error formatting date: ${getErrorMessage(error)}`);
+    console.error(`Error formatting date: ${error}`);
     return String(time ?? '');
   }
 }

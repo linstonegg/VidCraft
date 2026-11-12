@@ -3,7 +3,6 @@ import type { GlobalConfigProvider } from 'tdesign-vue-next';
 
 import { watch } from 'vue';
 
-import { useTDesignDesignTokens } from '@vben/hooks';
 import { usePreferences } from '@vben/preferences';
 
 import { merge } from 'es-toolkit/compat';
@@ -13,16 +12,10 @@ import zhConfig from 'tdesign-vue-next/es/locale/zh_CN';
 defineOptions({ name: 'App' });
 const { isDark } = usePreferences();
 
-// 将 Vben 设计系统的 CSS 变量适配到 TDesign 的设计变量上
-useTDesignDesignTokens();
-
 watch(
   () => isDark.value,
   (dark) => {
-    document.documentElement.setAttribute(
-      'theme-mode',
-      dark ? 'dark' : 'light',
-    );
+    document.documentElement.setAttribute('theme-mode', dark ? 'dark' : '');
   },
   { immediate: true },
 );

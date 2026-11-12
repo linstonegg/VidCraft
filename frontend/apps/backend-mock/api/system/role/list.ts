@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import { eventHandler, getQuery } from 'h3';
 import { verifyAccessToken } from '~/utils/jwt-utils';
 import { getMenuIds, MOCK_MENU_LIST } from '~/utils/mock-data';
-import { firstQueryInt, firstQueryString } from '~/utils/query';
 import { unAuthorizedResponse, usePageResponseSuccess } from '~/utils/response';
 
 const formatterCN = new Intl.DateTimeFormat('zh-CN', {
@@ -46,43 +45,40 @@ export default eventHandler(async (event) => {
     return unAuthorizedResponse(event);
   }
 
-  const { name, id, remark, startTime, endTime, status, page, pageSize } =
-    getQuery(event);
-  // 统一经 firstQueryString 规范化：同名参数重复时取首个字符串值，
-  // 非字符串值按空串处理，后续逻辑只需面对 string（不再 as string）。
-  const nameValue = firstQueryString(name);
-  const idValue = firstQueryString(id);
-  const remarkValue = firstQueryString(remark);
-  const startTimeValue = firstQueryString(startTime);
-  const endTimeValue = firstQueryString(endTime);
-  const statusValue = firstQueryString(status);
-  const pageNumber = firstQueryInt(page, 1);
-  const pageSizeNumber = firstQueryInt(pageSize, 20);
-
+  const {
+    page = 1,
+    pageSize = 20,
+    name,
+    id,
+    remark,
+    startTime,
+    endTime,
+    status,
+  } = getQuery(event);
   let listData = structuredClone(mockData);
-  if (nameValue) {
+  if (name) {
     listData = listData.filter((item) =>
-      item.name.toLowerCase().includes(nameValue.toLowerCase()),
+      item.name.toLowerCase().includes(String(name).toLowerCase()),
     );
   }
-  if (idValue) {
+  if (id) {
     listData = listData.filter((item) =>
-      item.id.toLowerCase().includes(idValue.toLowerCase()),
+      item.id.toLowerCase().includes(String(id).toLowerCase()),
     );
   }
-  if (remarkValue) {
+  if (remark) {
     listData = listData.filter((item) =>
-      item.remark?.toLowerCase()?.includes(remarkValue.toLowerCase()),
+      item.remark?.toLowerCase()?.includes(String(remark).toLowerCase()),
     );
   }
-  if (startTimeValue) {
-    listData = listData.filter((item) => item.createTime >= startTimeValue);
+  if (startTime) {
+    listData = listData.filter((item) => item.createTime >= startTime);
   }
-  if (endTimeValue) {
-    listData = listData.filter((item) => item.createTime <= endTimeValue);
+  if (endTime) {
+    listData = listData.filter((item) => item.createTime <= endTime);
   }
-  if (['0', '1'].includes(statusValue)) {
-    listData = listData.filter((item) => item.status === Number(statusValue));
+  if (['0', '1'].includes(status as string)) {
+    listData = listData.filter((item) => item.status === Number(status));
   }
-  return usePageResponseSuccess(pageNumber, pageSizeNumber, listData);
+  return usePageResponseSuccess(page as string, pageSize as string, listData);
 });

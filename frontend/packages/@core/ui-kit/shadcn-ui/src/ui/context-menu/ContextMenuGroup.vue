@@ -7,7 +7,7 @@ const props = defineProps<ContextMenuGroupProps>();
 </script>
 
 <template>
-  <ContextMenuGroup data-slot="context-menu-group" v-bind="props">
+  <ContextMenuGroup v-bind="props">
     <slot></slot>
   </ContextMenuGroup>
 </template>

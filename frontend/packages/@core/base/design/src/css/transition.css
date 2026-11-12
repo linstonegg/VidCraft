@@ -80,9 +80,7 @@
 
 .fade-slide-leave-active,
 .fade-slide-enter-active {
-  transition:
-    opacity 0.3s,
-    transform 0.3s;
+  transition: all 0.3s;
 }
 
 .fade-slide-enter-from {

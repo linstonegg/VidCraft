@@ -130,36 +130,23 @@ export interface DrawerProps {
 export interface DrawerState extends DrawerProps {
   /** 弹窗打开状态 */
   isOpen?: boolean;
+  /**
+   * 共享数据
+   */
+  sharedData?: Record<string, any>;
 }
 
-export type ExtendedDrawerApi<TData = unknown> = DrawerApi<TData> & {
+export type ExtendedDrawerApi = DrawerApi & {
   useStore: <T = NoInfer<DrawerState>>(
     selector?: (state: NoInfer<DrawerState>) => T,
   ) => Readonly<Ref<T>>;
 };
 
-type DrawerComponentInstance<TComponent extends Component> =
-  TComponent extends abstract new (...args: any[]) => infer TInstance
-    ? TInstance
-    : never;
-
-export type InferDrawerData<TComponent extends Component> = [
-  DrawerComponentInstance<TComponent>,
-] extends [never]
-  ? unknown
-  : DrawerComponentInstance<TComponent> extends {
-        drawerApi: ExtendedDrawerApi<infer TData>;
-      }
-    ? TData
-    : unknown;
-
-export interface DrawerApiOptions<
-  TConnectedComponent extends Component = Component,
-> extends DrawerState {
+export interface DrawerApiOptions extends DrawerState {
   /**
    * 独立的抽屉组件
    */
-  connectedComponent?: TConnectedComponent;
+  connectedComponent?: Component;
   /**
    * 关闭前的回调，返回 false 可以阻止关闭
    * @returns

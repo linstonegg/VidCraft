@@ -14,13 +14,9 @@ import ToggleItem from '../toggle-item.vue';
 defineProps<{ disabled: boolean }>();
 
 const headerEnable = defineModel<boolean>('headerEnable');
-const headerMode = defineModel<LayoutHeaderModeType | undefined>('headerMode', {
-  default: undefined,
-});
-const headerMenuAlign = defineModel<LayoutHeaderMenuAlignType | undefined>(
-  'headerMenuAlign',
-  { default: undefined },
-);
+const headerMode = defineModel<LayoutHeaderModeType>('headerMode');
+const headerMenuAlign =
+  defineModel<LayoutHeaderMenuAlignType>('headerMenuAlign');
 
 const localeItems: SelectOption[] = [
   {

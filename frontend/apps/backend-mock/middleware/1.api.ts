@@ -12,12 +12,9 @@ export default defineEventHandler(async (event) => {
     return 'OK';
   } else if (
     ['DELETE', 'PATCH', 'POST', 'PUT'].includes(event.method) &&
-    event.path.startsWith('/api/system/') &&
-    // 字典管理在内存中保存，用于演示缓存刷新，允许写操作
-    !event.path.startsWith('/api/system/dict/')
+    event.path.startsWith('/api/system/')
   ) {
     await sleep(Math.floor(Math.random() * 2000));
     return forbiddenResponse(event, '演示环境，禁止修改');
   }
-  return undefined;
 });

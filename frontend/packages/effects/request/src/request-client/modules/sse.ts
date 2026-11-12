@@ -37,7 +37,7 @@ class SSE {
   ) {
     const baseUrl = this.client.getBaseUrl() || '';
 
-    let axiosConfig: InternalAxiosRequestConfig = {
+    let axiosConfig: InternalAxiosRequestConfig<any> = {
       url,
       method: (requestOptions?.method as any) ?? 'GET',
       headers: {} as AxiosRequestHeaders,
@@ -51,15 +51,15 @@ class SSE {
       for (const handler of requestInterceptors.handlers) {
         if (typeof handler?.fulfilled === 'function') {
           const next = await handler.fulfilled(axiosConfig as any);
-          if (next) axiosConfig = next as InternalAxiosRequestConfig;
+          if (next) axiosConfig = next as InternalAxiosRequestConfig<any>;
         }
       }
     }
 
     const merged = new Headers();
-    Object.entries(axiosConfig.headers ?? {}).forEach(([k, v]) =>
-      merged.set(k, v),
-    );
+    Object.entries(
+      (axiosConfig.headers ?? {}) as Record<string, string>,
+    ).forEach(([k, v]) => merged.set(k, String(v)));
     if (requestOptions?.headers) {
       new Headers(requestOptions.headers).forEach((v, k) => merged.set(k, v));
     }
@@ -72,7 +72,7 @@ class SSE {
     if (
       bodyInit &&
       typeof bodyInit === 'object' &&
-      !ArrayBuffer.isView(bodyInit) &&
+      !ArrayBuffer.isView(bodyInit as any) &&
       !(bodyInit instanceof ArrayBuffer) &&
       !(bodyInit instanceof Blob) &&
       !(bodyInit instanceof FormData) &&
@@ -117,17 +117,17 @@ function safeJoinUrl(baseUrl: string | undefined, url: string): string {
     return url; // 没有 baseUrl，直接返回 url
   }
 
-  // 与 axios 的 isAbsoluteURL 一致：`<scheme>://…` 与 protocol-relative 的 `//…` 都算绝对地址
-  if (/^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)) {
+  // 如果 url 本身就是绝对地址，直接返回
+  if (/^https?:\/\//i.test(url)) {
     return url;
   }
 
-  // 与 axios 保持一致：空的相对地址直接返回 baseUrl，不做拼接
-  if (!url) {
-    return baseUrl;
+  // 如果 baseUrl 是完整 URL，就用 new URL
+  if (/^https?:\/\//i.test(baseUrl)) {
+    return new URL(url, baseUrl).toString();
   }
 
-  // 与 axios 保持一致：baseUrl 的路径段属于接口前缀，不能被 URL 解析丢掉
+  // 否则，当作路径拼接
   return `${baseUrl.replace(/\/+$/, '')}/${url.replace(/^\/+/, '')}`;
 }
 

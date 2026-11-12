@@ -42,15 +42,6 @@ function traverseTreeValues<T, V>(
 
 /**
  * 根据条件过滤给定树结构的节点，并以原有顺序返回所有匹配节点的数组。
- *
- * 该函数是纯函数：不会把过滤后的结果写回传入的树（源数据不被修改）。
- * 否则第二次用不同条件过滤同一棵树时（例如切换用户角色后重新生成路由），
- * 上一次被过滤掉的子节点将永久丢失。
- *
- * 引用语义：只有当子节点序列真的发生变化时，命中的分支节点才会被浅拷贝；
- * 子节点未发生变化（或节点没有子节点）时，仍按引用返回原节点，
- * 因此按引用缓存或比较节点的调用方，其行为保持不变。
- *
  * @param tree 要过滤的树结构的根节点数组。
  * @param filter 用于匹配每个节点的条件。
  * @param options 作为子节点数组的可选属性名称。
@@ -66,34 +57,15 @@ function filterTree<T extends Record<string, any>>(
   };
 
   const _filterTree = (nodes: T[]): T[] => {
-    const result: T[] = [];
-
-    for (const node of nodes) {
-      if (!filter(node)) {
-        continue;
+    return nodes.filter((node: Record<string, any>) => {
+      if (filter(node as T)) {
+        if (node[childProps]) {
+          node[childProps] = _filterTree(node[childProps]);
+        }
+        return true;
       }
-
-      const children = (node as Record<string, any>)[childProps];
-
-      if (!children) {
-        result.push(node);
-        continue;
-      }
-
-      const filteredChildren = _filterTree(children);
-
-      // 子节点序列没有变化时按引用返回原节点，保持原有的引用语义；
-      // 只有确实需要替换子节点时才复制节点，避免污染源数据
-      const childrenUnchanged =
-        filteredChildren.length === children.length &&
-        filteredChildren.every((child, index) => child === children[index]);
-
-      result.push(
-        childrenUnchanged ? node : { ...node, [childProps]: filteredChildren },
-      );
-    }
-
-    return result;
+      return false;
+    });
   };
 
   return _filterTree(tree);
@@ -107,22 +79,16 @@ function filterTree<T extends Record<string, any>>(
  */
 function mapTree<T, V extends Record<string, any>>(
   tree: T[],
-  mapper: (node: T, parent: null | V) => V,
+  mapper: (node: T) => V,
   options?: TreeConfigOptions,
-  parent: null | V = null,
 ): V[] {
   const { childProps } = options || {
     childProps: 'children',
   };
   return tree.map((node) => {
-    const mapperNode: Record<string, any> = mapper(node, parent);
+    const mapperNode: Record<string, any> = mapper(node);
     if (mapperNode[childProps]) {
-      mapperNode[childProps] = mapTree(
-        mapperNode[childProps],
-        mapper,
-        options,
-        mapperNode as V,
-      );
+      mapperNode[childProps] = mapTree(mapperNode[childProps], mapper, options);
     }
     return mapperNode as V;
   });

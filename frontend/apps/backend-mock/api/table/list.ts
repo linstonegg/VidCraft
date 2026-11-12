@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { eventHandler, getQuery } from 'h3';
 import { verifyAccessToken } from '~/utils/jwt-utils';
-import { firstQueryInt, firstQueryString } from '~/utils/query';
 import {
   sleep,
   unAuthorizedResponse,
@@ -50,21 +49,25 @@ export default eventHandler(async (event) => {
   await sleep(600);
 
   const { page, pageSize, sortBy, sortOrder } = getQuery(event);
-  // 规范化分页参数：同名参数重复时取首个字符串值；demo 表钳制在
-  // 1..100 页大小，默认值与 system 端点（20）不同（demo 语义 10）。
-  const pageNumber = Math.max(1, firstQueryInt(page, 1));
+  // 规范化分页参数，处理 string[]
+  const pageRaw = Array.isArray(page) ? page[0] : page;
+  const pageSizeRaw = Array.isArray(pageSize) ? pageSize[0] : pageSize;
+  const pageNumber = Math.max(
+    1,
+    Number.parseInt(String(pageRaw ?? '1'), 10) || 1,
+  );
   const pageSizeNumber = Math.min(
     100,
-    Math.max(1, firstQueryInt(pageSize, 10)),
+    Math.max(1, Number.parseInt(String(pageSizeRaw ?? '10'), 10) || 10),
   );
   const listData = structuredClone(mockData);
 
-  // 排序入参同样取首个字符串值
-  const sortKeyRaw = firstQueryString(sortBy);
-  const sortOrderRaw = firstQueryString(sortOrder);
+  // 规范化 query 入参，兼容 string[]
+  const sortKeyRaw = Array.isArray(sortBy) ? sortBy[0] : sortBy;
+  const sortOrderRaw = Array.isArray(sortOrder) ? sortOrder[0] : sortOrder;
   // 检查 sortBy 是否是 listData 元素的合法属性键
   if (
-    sortKeyRaw &&
+    typeof sortKeyRaw === 'string' &&
     listData[0] &&
     Object.prototype.hasOwnProperty.call(listData[0], sortKeyRaw)
   ) {

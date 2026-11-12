@@ -1,0 +1,16 @@
+# VidCraft 仓库根目录忽略规则
+# 前端为 Vben 5.x workspace，位于 frontend/，更细的规则见 frontend/.gitignore
+
+# pnpm 本地 store（不提交依赖缓存）
+.pnpm-store/
+frontend/.pnpm-store/
+
+# 上游对照副本（仅本机排查使用）
+.upstream/
+
+# 本地日志
+*.log
+
+# 构建产物（frontend/.gitignore 已覆盖其内部 dist，这里兜底）
+frontend/apps/*/dist/
+frontend/apps/*/dist.zip

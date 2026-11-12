@@ -7,15 +7,6 @@ import { VbenIconButton } from '../button';
 
 defineOptions({ name: 'FullScreen' });
 
-withDefaults(
-  defineProps<{
-    tooltip?: string;
-  }>(),
-  {
-    tooltip: '',
-  },
-);
-
 const { isFullscreen, toggle } = useFullscreen();
 
 // 重新检查全屏状态
@@ -31,7 +22,6 @@ isFullscreen.value = !!(
 </script>
 <template>
   <VbenIconButton
-    :tooltip="tooltip || undefined"
     class="hover:animate-[shrink_0.3s_ease-in-out]"
     @click="toggle"
   >

@@ -3,10 +3,10 @@ import type { ModalApiOptions, ModalState } from './modal';
 import { Store } from '@vben-core/shared/store';
 import { bindMethods, isFunction } from '@vben-core/shared/utils';
 
-export class ModalApi<TData = unknown> {
+export class ModalApi {
   // 共享数据
-  public sharedData: Record<'payload', TData | undefined> = {
-    payload: undefined,
+  public sharedData: Record<'payload', any> = {
+    payload: {},
   };
   public store: Store<ModalState>;
 
@@ -106,8 +106,8 @@ export class ModalApi<TData = unknown> {
     }
   }
 
-  getData(): TData | undefined {
-    return this.sharedData.payload;
+  getData<T extends object = Record<string, any>>() {
+    return (this.sharedData?.payload ?? {}) as T;
   }
 
   /**
@@ -126,7 +126,7 @@ export class ModalApi<TData = unknown> {
     if (this.api.onCancel) {
       this.api.onCancel?.();
     } else {
-      void this.close();
+      this.close();
     }
   }
 
@@ -163,7 +163,7 @@ export class ModalApi<TData = unknown> {
     }));
   }
 
-  setData(payload: TData) {
+  setData<T>(payload: T) {
     this.sharedData.payload = payload;
     return this;
   }

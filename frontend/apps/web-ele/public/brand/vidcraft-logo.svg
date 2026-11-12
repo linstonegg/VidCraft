@@ -1,0 +1,33 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 168 40"
+  role="img"
+  aria-label="VidCraft 创作平台"
+>
+  <rect
+    x="0"
+    y="4"
+    width="32"
+    height="32"
+    rx="9"
+    fill="#6757d7"
+  />
+  <path
+    d="M9.5 13.5 16 26l6.5-12.5"
+    stroke="#ffffff"
+    stroke-width="3.2"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="23.5" cy="15" r="2" fill="#ffd166" />
+  <text
+    x="42"
+    y="26"
+    font-family="'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"
+    font-size="19"
+    font-weight="700"
+    fill="currentColor"
+    letter-spacing="0.4"
+  >VidCraft</text>
+</svg>

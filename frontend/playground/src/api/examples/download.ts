@@ -7,7 +7,7 @@ import { requestClient } from '../request';
  * @returns Blob
  */
 async function downloadFile1() {
-  return requestClient.download(
+  return requestClient.download<Blob>(
     'https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp',
   );
 }

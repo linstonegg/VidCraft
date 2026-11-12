@@ -239,7 +239,9 @@ async function initComponentAdapter() {
       modelValueProp: 'value',
     }),
     Input: withDefaultPlaceholder(Input, 'input'),
-    InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
+    InputNumber: withDefaultPlaceholder(InputNumber, 'input', {
+      style: { width: '100%' },
+    }),
     // InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
     // Mentions: withDefaultPlaceholder(Mentions, 'input'),
     // 自定义主要按钮
@@ -282,7 +284,7 @@ async function initComponentAdapter() {
   globalShareState.defineMessage({
     // 复制成功消息提示
     copyPreferencesSuccess: (title, content) => {
-      void notification.success({
+      notification.success({
         title,
         content,
         placement: 'bottom-right',

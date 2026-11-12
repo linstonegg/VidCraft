@@ -22,21 +22,6 @@ function definePreferencesExtension<
   return extension;
 }
 
-/** 应用级版权配置，供各 app 的 preferences 覆盖使用 */
-const appCopyrightPreferences = {
-  companyName: 'Vben',
-  companySiteLink: 'https://www.vben.pro',
-  date: '2024',
-  enable: true,
-  icp: '闽ICP备19024351号',
-  icpLink: 'https://beian.miit.gov.cn/',
-  settingShow: true,
-} satisfies DeepPartial<Preferences>['copyright'];
-
-export {
-  appCopyrightPreferences,
-  defineOverridesPreferences,
-  definePreferencesExtension,
-};
+export { defineOverridesPreferences, definePreferencesExtension };
 
 export * from '@vben-core/preferences';

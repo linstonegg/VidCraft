@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" role="img" aria-label="空间展开 分镜示意图">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a1a2e"/><stop offset="1" stop-color="#6c5ce7" stop-opacity="0.55"/></linearGradient></defs>
+<rect width="720" height="1280" fill="url(#g)"/>
+<circle cx="138" cy="932" r="86" fill="#00cec9" opacity="0.12"/><circle cx="269" cy="329" r="109" fill="#6c5ce7" opacity="0.16999999999999998"/><circle cx="400" cy="486" r="42" fill="#00cec9" opacity="0.22"/><circle cx="531" cy="643" r="65" fill="#6c5ce7" opacity="0.27"/>
+<rect x="60" y="90" width="600" height="220" rx="18" fill="#000" opacity="0.22"/>
+<text x="84" y="145" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="18" fill="#00cec9" opacity="0.9">SHOT 09 · MOCK STORYBOARD</text>
+<text x="84" y="220" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="52" font-weight="700" fill="#fff">空间展开</text>
+<text x="84" y="270" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="20" fill="#fff" opacity="0.65">分镜示意图 · 仅用于 Mock 预演</text>
+<rect x="60" y="980" width="476" height="10" rx="5" fill="#00cec9" opacity="0.18"/><rect x="60" y="1008" width="537" height="10" rx="5" fill="#6c5ce7" opacity="0.22"/><rect x="60" y="1036" width="598" height="10" rx="5" fill="#00cec9" opacity="0.26"/><rect x="60" y="1064" width="239" height="10" rx="5" fill="#6c5ce7" opacity="0.3"/><rect x="60" y="1092" width="300" height="10" rx="5" fill="#00cec9" opacity="0.33999999999999997"/><rect x="60" y="1120" width="361" height="10" rx="5" fill="#6c5ce7" opacity="0.38"/>
+<rect x="60" y="1180" width="600" height="2" fill="#00cec9" opacity="0.5"/>
+<text x="60" y="1228" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" fill="#fff" opacity="0.55">VidCraft · 3D 网页简历 · 9:16</text>
+</svg>

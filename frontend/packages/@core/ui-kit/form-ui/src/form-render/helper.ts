@@ -1,60 +1,55 @@
-import type { ZodType } from 'zod';
-
-import { toRaw } from 'vue';
+import type {
+  AnyZodObject,
+  ZodDefault,
+  ZodEffects,
+  ZodNumber,
+  ZodString,
+  ZodTypeAny,
+} from 'zod';
 
 import { isObject, isString } from '@vben-core/shared/utils';
-
-import { ZodPipe } from 'zod';
-
-type UnwrappableZodType = ZodType & {
-  unwrap?: () => ZodType;
-};
 
 /**
  * Get the lowest level Zod type.
  * This will unpack optionals, refinements, etc.
  */
-export function getBaseRules(schema?: null | string | ZodType): null | ZodType {
+export function getBaseRules<
+  ChildType extends AnyZodObject | ZodTypeAny = ZodTypeAny,
+>(schema: ChildType | ZodEffects<ChildType>): ChildType | null {
   if (!schema || isString(schema)) return null;
-  const rawSchema = toRaw(schema);
+  if ('innerType' in schema._def)
+    return getBaseRules(schema._def.innerType as ChildType);
 
-  if (rawSchema instanceof ZodPipe) {
-    return getBaseRules(rawSchema.in as ZodType);
-  }
+  if ('schema' in schema._def)
+    return getBaseRules(schema._def.schema as ChildType);
 
-  // In zod v4, ZodArray also has an unwrap() that returns its element type
-  // (not an outer wrapper). We must not unwrap it, otherwise z.array(T) loses
-  // its array shell and array values fail validation.
-  const defType = (rawSchema as unknown as { _zod?: { def: { type: string } } })
-    ._zod?.def?.type;
-  if (defType === 'array') {
-    return rawSchema;
-  }
-
-  const unwrappedSchema = (rawSchema as UnwrappableZodType).unwrap?.();
-  if (unwrappedSchema && unwrappedSchema !== rawSchema) {
-    return getBaseRules(unwrappedSchema);
-  }
-
-  return rawSchema;
+  return schema as ChildType;
 }
 
 /**
  * Search for a "ZodDefault" in the Zod stack and return its value.
  */
-export function getDefaultValueInZodStack(
-  schema?: null | string | ZodType,
-): any {
+export function getDefaultValueInZodStack(schema: ZodTypeAny): any {
   if (!schema || isString(schema)) {
-    return undefined;
+    return;
+  }
+  const typedSchema = schema as unknown as ZodDefault<ZodNumber | ZodString>;
+
+  if (typedSchema._def.typeName === 'ZodDefault')
+    return typedSchema._def.defaultValue();
+
+  if ('innerType' in typedSchema._def) {
+    return getDefaultValueInZodStack(
+      typedSchema._def.innerType as unknown as ZodTypeAny,
+    );
+  }
+  if ('schema' in typedSchema._def) {
+    return getDefaultValueInZodStack(
+      (typedSchema._def as any).schema as ZodTypeAny,
+    );
   }
 
-  try {
-    const result = toRaw(schema).safeParse(undefined);
-    return result.success ? result.data : undefined;
-  } catch {
-    return undefined;
-  }
+  return undefined;
 }
 
 export function isEventObjectLike(obj: any) {

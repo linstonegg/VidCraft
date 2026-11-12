@@ -16,12 +16,9 @@
   "disabled": "Disabled",
   "edit": "Edit",
   "delete": "Delete",
-  "detail": "Detail",
   "create": "Create",
   "yes": "Yes",
   "no": "No",
   "showSearchPanel": "Show search panel",
-  "hideSearchPanel": "Hide search panel",
-  "notShow": "Don't Show",
-  "more": "More"
+  "hideSearchPanel": "Hide search panel"
 }

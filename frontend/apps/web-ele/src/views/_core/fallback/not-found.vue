@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import { Fallback } from '@vben/common-ui';
 
-defineOptions({ name: 'Fallback404Demo' });
+defineOptions({ name: 'VidCraftFallbackNotFound' });
 </script>
 
 <template>
-  <Fallback status="404" />
+  <Fallback
+    :description="$t('vidcraft.fallback.notFoundDesc')"
+    home-path="/dashboard"
+    :title="$t('vidcraft.fallback.notFoundTitle')"
+    status="404"
+  />
 </template>

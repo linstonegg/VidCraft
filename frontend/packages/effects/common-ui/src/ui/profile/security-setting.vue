@@ -4,6 +4,7 @@ import type { Recordable } from '@vben/types';
 import type { SettingProps } from './types';
 
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -25,7 +26,7 @@ function handleChange(fieldName: string, value: boolean) {
 }
 </script>
 <template>
-  <form class="space-y-8">
+  <Form class="space-y-8">
     <div class="space-y-4">
       <template v-for="item in formSchema" :key="item.fieldName">
         <FormField type="checkbox" :name="item.fieldName">
@@ -48,5 +49,5 @@ function handleChange(fieldName: string, value: boolean) {
         </FormField>
       </template>
     </div>
-  </form>
+  </Form>
 </template>

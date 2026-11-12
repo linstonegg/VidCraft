@@ -5,14 +5,9 @@ import { useVbenModal } from '@vben/common-ui';
 
 import { message } from 'antdv-next';
 
-interface SharedData {
-  content: string;
-  payload: string;
-}
+const data = ref();
 
-const data = ref<SharedData>();
-
-const [Modal, modalApi] = useVbenModal<SharedData>({
+const [Modal, modalApi] = useVbenModal({
   onCancel() {
     modalApi.close();
   },
@@ -22,12 +17,10 @@ const [Modal, modalApi] = useVbenModal<SharedData>({
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
-      data.value = modalApi.getData();
+      data.value = modalApi.getData<Record<string, any>>();
     }
   },
 });
-
-defineExpose({ modalApi });
 </script>
 <template>
   <Modal title="数据共享示例">

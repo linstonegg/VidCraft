@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" role="img" aria-label="技能图谱 分镜示意图">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f1b24"/><stop offset="1" stop-color="#bb86fc" stop-opacity="0.55"/></linearGradient></defs>
+<rect width="720" height="1280" fill="url(#g)"/>
+<circle cx="280" cy="350" r="120" fill="#03dac6" opacity="0.12"/><circle cx="411" cy="507" r="53" fill="#bb86fc" opacity="0.16999999999999998"/><circle cx="542" cy="664" r="76" fill="#03dac6" opacity="0.22"/><circle cx="153" cy="821" r="99" fill="#bb86fc" opacity="0.27"/>
+<rect x="60" y="90" width="600" height="220" rx="18" fill="#000" opacity="0.22"/>
+<text x="84" y="145" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="18" fill="#03dac6" opacity="0.9">SHOT 11 · MOCK STORYBOARD</text>
+<text x="84" y="220" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="52" font-weight="700" fill="#fff">技能图谱</text>
+<text x="84" y="270" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="20" fill="#fff" opacity="0.65">分镜示意图 · 仅用于 Mock 预演</text>
+<rect x="60" y="980" width="550" height="10" rx="5" fill="#03dac6" opacity="0.18"/><rect x="60" y="1008" width="191" height="10" rx="5" fill="#bb86fc" opacity="0.22"/><rect x="60" y="1036" width="252" height="10" rx="5" fill="#03dac6" opacity="0.26"/><rect x="60" y="1064" width="313" height="10" rx="5" fill="#bb86fc" opacity="0.3"/><rect x="60" y="1092" width="374" height="10" rx="5" fill="#03dac6" opacity="0.33999999999999997"/><rect x="60" y="1120" width="435" height="10" rx="5" fill="#bb86fc" opacity="0.38"/>
+<rect x="60" y="1180" width="600" height="2" fill="#03dac6" opacity="0.5"/>
+<text x="60" y="1228" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" fill="#fff" opacity="0.55">VidCraft · 3D 网页简历 · 9:16</text>
+</svg>

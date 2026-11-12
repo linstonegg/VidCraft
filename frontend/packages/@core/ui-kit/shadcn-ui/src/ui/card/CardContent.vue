@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue';
-
 import { cn } from '@vben-core/shared/utils';
 
 const props = defineProps<{
-  class?: HTMLAttributes['class'];
+  class?: any;
 }>();
 </script>
 
 <template>
-  <div data-slot="card-content" :class="cn('px-6', props.class)">
+  <div :class="cn('p-6 pt-0', props.class)">
     <slot></slot>
   </div>
 </template>

@@ -43,20 +43,18 @@ const close = () => {
   open.value = false;
 };
 
-function handleViewAll() {
+const handleViewAll = () => {
   emit('viewAll');
   close();
-}
+};
 
-function handleMakeAll() {
+const handleMakeAll = () => {
   emit('makeAll');
-}
+};
 
-function handleClear() {
+const handleClear = () => {
   emit('clear');
-}
-
-defineExpose({ toggle });
+};
 </script>
 <template>
   <VbenPopover v-model:open="open" content-class="relative right-2 w-90 p-0">
@@ -65,7 +63,7 @@ defineExpose({ toggle });
         <VbenIconButton class="bell-button relative text-foreground">
           <span
             v-if="dot"
-            class="absolute top-0.5 right-0.5 size-2 rounded-full bg-primary"
+            class="absolute top-0.5 right-0.5 size-2 rounded-sm bg-primary"
           ></span>
           <Bell class="size-4" />
         </VbenIconButton>

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "state": {
+    "projects": [{ "id": "legacy_project", "title": "Legacy" }],
+    "evidence": {},
+    "idempotency": {},
+    "ingestions": {},
+    "jobs": {},
+    "revisions": {},
+    "sequence": 0,
+    "snapshots": []
+  }
+}

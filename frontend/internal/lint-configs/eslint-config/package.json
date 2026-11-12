@@ -1,6 +1,6 @@
 {
   "name": "@vben/eslint-config",
-  "version": "5.8.0",
+  "version": "5.7.0",
   "private": true,
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
@@ -12,8 +12,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "stub": "pnpm exec tsdown",
-    "typecheck": "vue-tsc --noEmit"
+    "stub": "pnpm exec tsdown"
   },
   "files": [
     "dist"
@@ -29,14 +28,15 @@
   },
   "dependencies": {
     "@eslint/js": "catalog:",
+    "@typescript-eslint/eslint-plugin": "catalog:",
     "@typescript-eslint/parser": "catalog:",
     "@vben/oxlint-config": "workspace:*",
     "eslint": "catalog:",
     "eslint-plugin-jsonc": "catalog:",
     "eslint-plugin-n": "catalog:",
-    "eslint-plugin-oxlint": "catalog:",
     "eslint-plugin-perfectionist": "catalog:",
     "eslint-plugin-pnpm": "catalog:",
+    "eslint-plugin-unicorn": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
     "eslint-plugin-vue": "catalog:",
     "eslint-plugin-yml": "catalog:",

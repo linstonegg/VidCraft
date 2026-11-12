@@ -125,6 +125,8 @@ type MergeAll<
   ? MergeAll<Rest, Merge<R, F>>
   : R;
 
+type EmitType = (name: Name, ...args: any[]) => void;
+
 type MaybePromise<T> = Promise<T> | T;
 
 export type {
@@ -133,6 +135,7 @@ export type {
   AnyPromiseFunction,
   DeepPartial,
   DeepReadonly,
+  EmitType,
   IntervalHandle,
   MaybeComputedRef,
   MaybePromise,

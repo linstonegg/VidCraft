@@ -16,44 +16,57 @@ export const MOCK_USERS: UserInfo[] = [
   {
     id: 0,
     password: '123456',
-    realName: 'Vben',
-    roles: ['super'],
-    username: 'vben',
+    realName: '产品拥有者（演示）',
+    roles: ['owner'],
+    username: 'owner',
     homePath: '/dashboard',
   },
   {
     id: 1,
     password: '123456',
-    realName: 'Admin',
-    roles: ['admin'],
-    username: 'admin',
+    realName: '内容编辑（演示）',
+    roles: ['editor'],
+    username: 'editor',
     homePath: '/dashboard',
   },
   {
     id: 2,
     password: '123456',
-    realName: 'Jack',
-    roles: ['user'],
-    username: 'jack',
+    realName: '审核员（演示）',
+    roles: ['reviewer'],
+    username: 'reviewer',
+    homePath: '/dashboard',
+  },
+  {
+    id: 3,
+    password: '123456',
+    realName: '系统管理员（演示）',
+    roles: ['admin'],
+    username: 'admin',
     homePath: '/dashboard',
   },
 ];
 
 export const MOCK_CODES = [
-  // super
   {
+    // owner
     codes: ['AC_100100', 'AC_100110', 'AC_100120', 'AC_100010'],
-    username: 'vben',
+    username: 'owner',
+  },
+  {
+    // editor
+    codes: ['AC_100010', 'AC_100020'],
+    username: 'editor',
+  },
+  {
+    // reviewer
+    codes: ['AC_1000001'],
+    username: 'reviewer',
   },
   {
     // admin
     codes: ['AC_100010', 'AC_100020', 'AC_100030'],
     username: 'admin',
-  },
-  {
-    // user
-    codes: ['AC_1000001', 'AC_1000002'],
-    username: 'jack',
   },
 ];
 
@@ -65,11 +78,11 @@ const dashboardMenus = [
     },
     name: 'Dashboard',
     path: '/dashboard',
-    redirect: '/dashboard/analytics',
+    redirect: '/analytics',
     children: [
       {
         name: 'Analytics',
-        path: 'analytics',
+        path: '/analytics',
         component: '/dashboard/analytics/index',
         meta: {
           affixTab: true,
@@ -78,7 +91,7 @@ const dashboardMenus = [
       },
       {
         name: 'Workspace',
-        path: 'workspace',
+        path: '/workspace',
         component: '/dashboard/workspace/index',
         meta: {
           title: 'page.dashboard.workspace',
@@ -97,7 +110,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
         title: 'demos.access.adminVisible',
       },
       name: 'AccessAdminVisibleDemo',
-      path: 'admin-visible',
+      path: '/demos/access/admin-visible',
     },
     super: {
       component: '/demos/access/super-visible',
@@ -106,7 +119,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
         title: 'demos.access.superVisible',
       },
       name: 'AccessSuperVisibleDemo',
-      path: 'super-visible',
+      path: '/demos/access/super-visible',
     },
     user: {
       component: '/demos/access/user-visible',
@@ -115,7 +128,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
         title: 'demos.access.userVisible',
       },
       name: 'AccessUserVisibleDemo',
-      path: 'user-visible',
+      path: '/demos/access/user-visible',
     },
   };
 
@@ -133,7 +146,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
       children: [
         {
           name: 'AccessDemos',
-          path: 'access',
+          path: '/demosaccess',
           meta: {
             icon: 'mdi:cloud-key-outline',
             title: 'demos.access.backendPermissions',
@@ -142,7 +155,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
           children: [
             {
               name: 'AccessPageControlDemo',
-              path: 'page-control',
+              path: '/demos/access/page-control',
               component: '/demos/access/index',
               meta: {
                 icon: 'mdi:page-previous-outline',
@@ -151,7 +164,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
             },
             {
               name: 'AccessButtonControlDemo',
-              path: 'button-control',
+              path: '/demos/access/button-control',
               component: '/demos/access/button-control',
               meta: {
                 icon: 'mdi:button-cursor',
@@ -160,7 +173,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
             },
             {
               name: 'AccessMenuVisible403Demo',
-              path: 'menu-visible-403',
+              path: '/demos/access/menu-visible-403',
               component: '/demos/access/menu-visible-403',
               meta: {
                 authority: ['no-body'],
@@ -180,7 +193,7 @@ const createDemosMenus = (role: 'admin' | 'super' | 'user') => {
 export const MOCK_MENUS = [
   {
     menus: [...dashboardMenus, ...createDemosMenus('super')],
-    username: 'vben',
+    username: 'owner',
   },
   {
     menus: [...dashboardMenus, ...createDemosMenus('admin')],
@@ -188,53 +201,25 @@ export const MOCK_MENUS = [
   },
   {
     menus: [...dashboardMenus, ...createDemosMenus('user')],
-    username: 'jack',
+    username: 'reviewer',
   },
 ];
 
 export const MOCK_MENU_LIST = [
   {
     id: 1,
-    name: 'Dashboard',
+    name: 'Workspace',
     status: 1,
-    type: 'catalog',
-    icon: 'lucide:layout-dashboard',
-    path: '/dashboard',
+    type: 'menu',
+    icon: 'mdi:dashboard',
+    path: '/workspace',
+    component: '/dashboard/workspace/index',
     meta: {
-      icon: 'lucide:layout-dashboard',
-      order: -1,
-      title: 'page.dashboard.title',
+      icon: 'carbon:workspace',
+      title: 'page.dashboard.workspace',
+      affixTab: true,
+      order: 0,
     },
-    children: [
-      {
-        id: 101,
-        pid: 1,
-        status: 1,
-        type: 'menu',
-        name: 'Analytics',
-        path: 'analytics',
-        component: '/dashboard/analytics/index',
-        meta: {
-          affixTab: true,
-          icon: 'lucide:area-chart',
-          title: 'page.dashboard.analytics',
-          keepAlive: true,
-        },
-      },
-      {
-        id: 102,
-        pid: 1,
-        status: 1,
-        type: 'menu',
-        name: 'Workspace',
-        path: 'workspace',
-        component: '/views/dashboard/workspace/index',
-        meta: {
-          icon: 'carbon:workspace',
-          title: 'page.dashboard.workspace',
-        },
-      },
-    ],
   },
   {
     id: 2,
@@ -333,49 +318,6 @@ export const MOCK_MENU_LIST = [
             status: 1,
             type: 'button',
             authCode: 'System:Dept:Delete',
-            meta: { title: 'common.delete' },
-          },
-        ],
-      },
-      {
-        id: 203,
-        pid: 2,
-        path: '/system/dict',
-        name: 'SystemDict',
-        status: 1,
-        type: 'menu',
-        authCode: 'System:Dict:List',
-        meta: {
-          icon: 'mdi:book-cog-outline',
-          title: 'system.dict.title',
-        },
-        component: '/system/dict/list',
-        children: [
-          {
-            id: 20_501,
-            pid: 203,
-            name: 'SystemDictCreate',
-            status: 1,
-            type: 'button',
-            authCode: 'System:Dict:Create',
-            meta: { title: 'common.create' },
-          },
-          {
-            id: 20_502,
-            pid: 203,
-            name: 'SystemDictEdit',
-            status: 1,
-            type: 'button',
-            authCode: 'System:Dict:Edit',
-            meta: { title: 'common.edit' },
-          },
-          {
-            id: 20_503,
-            pid: 203,
-            name: 'SystemDictDelete',
-            status: 1,
-            type: 'button',
-            authCode: 'System:Dict:Delete',
             meta: { title: 'common.delete' },
           },
         ],

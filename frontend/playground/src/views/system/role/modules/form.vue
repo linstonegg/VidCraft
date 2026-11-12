@@ -32,7 +32,7 @@ const permissions = ref<DataNode[]>([]);
 const loadingPermissions = ref(false);
 
 const id = ref();
-const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
+const [Drawer, drawerApi] = useVbenDrawer({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (!valid) return;
@@ -50,14 +50,13 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
 
   async onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData();
-      formApi.reset();
+      const data = drawerApi.getData<SystemRoleApi.SystemRole>();
+      formApi.resetForm();
 
       if (data) {
         formData.value = data;
         id.value = data.id;
       } else {
-        formData.value = undefined;
         id.value = undefined;
       }
 
@@ -72,8 +71,6 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
     }
   },
 });
-
-defineExpose({ drawerApi });
 
 async function loadPermissions() {
   loadingPermissions.value = true;
@@ -111,7 +108,7 @@ function getNodeClass(node: Recordable<any>) {
             bordered
             :default-expanded-level="2"
             :get-node-class="getNodeClass"
-            v-bind="slotProps.componentProps"
+            v-bind="slotProps"
             value-field="id"
             label-field="meta.title"
             icon-field="meta.icon"

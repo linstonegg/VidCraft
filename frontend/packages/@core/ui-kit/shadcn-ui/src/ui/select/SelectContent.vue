@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { SelectContentEmits, SelectContentProps } from 'reka-ui';
 
-import type { HTMLAttributes } from 'vue';
+import { computed } from 'vue';
 
 import { cn } from '@vben-core/shared/utils';
 
-import { reactiveOmit } from '@vueuse/core';
 import {
   SelectContent,
   SelectPortal,
@@ -13,21 +12,26 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui';
 
-import { SelectScrollDownButton, SelectScrollUpButton } from '.';
+import SelectScrollDownButton from './SelectScrollDownButton.vue';
+import SelectScrollUpButton from './SelectScrollUpButton.vue';
 
 defineOptions({
   inheritAttrs: false,
 });
 
 const props = withDefaults(
-  defineProps<SelectContentProps & { class?: HTMLAttributes['class'] }>(),
+  defineProps<SelectContentProps & { class?: any }>(),
   {
     position: 'popper',
   },
 );
 const emits = defineEmits<SelectContentEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class');
+const delegatedProps = computed(() => {
+  const { class: _, ...delegated } = props;
+
+  return delegated;
+});
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
@@ -35,11 +39,10 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 <template>
   <SelectPortal>
     <SelectContent
-      data-slot="select-content"
-      v-bind="{ ...$attrs, ...forwarded }"
+      v-bind="{ ...forwarded, ...$attrs }"
       :class="
         cn(
-          'z-popup bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative max-h-(--reka-select-content-available-height) min-w-[8rem] overflow-x-hidden overflow-y-auto rounded-md border shadow-md',
+          'z-popup border-border bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative max-h-96 min-w-32 overflow-hidden rounded-md border shadow-md',
           position === 'popper' &&
             'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
           props.class,
@@ -52,7 +55,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
           cn(
             'p-1',
             position === 'popper' &&
-              'h-(--reka-select-trigger-height) w-full min-w-(--reka-select-trigger-width) scroll-my-1',
+              'h-(--reka-select-trigger-height) w-full min-w-(--reka-select-trigger-width)',
           )
         "
       >

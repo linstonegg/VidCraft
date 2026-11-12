@@ -41,7 +41,7 @@ const [Form, { resetForm, validate, getValues, getFieldComponentRef }] =
             placeholder: $t('ui.widgets.lockScreen.placeholder'),
           },
           fieldName: 'lockScreenPassword',
-          formFieldProps: { validateOn: ['change'] as const },
+          formFieldProps: { validateOnBlur: false },
           label: $t('authentication.password'),
           rules: z
             .string()

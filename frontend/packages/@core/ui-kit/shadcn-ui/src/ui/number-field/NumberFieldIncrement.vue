@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import type { NumberFieldIncrementProps } from 'reka-ui';
 
-import type { HTMLAttributes } from 'vue';
+import { computed } from 'vue';
 
 import { cn } from '@vben-core/shared/utils';
 
-import { Plus } from '@lucide/vue';
-import { reactiveOmit } from '@vueuse/core';
+import { Plus } from 'lucide-vue-next';
 import { NumberFieldIncrement, useForwardProps } from 'reka-ui';
 
-const props = defineProps<
-  NumberFieldIncrementProps & { class?: HTMLAttributes['class'] }
->();
+const props = defineProps<NumberFieldIncrementProps & { class?: any }>();
 
-const delegatedProps = reactiveOmit(props, 'class');
+const delegatedProps = computed(() => {
+  const { class: _, ...delegated } = props;
+
+  return delegated;
+});
 
 const forwarded = useForwardProps(delegatedProps);
 </script>
@@ -24,7 +25,7 @@ const forwarded = useForwardProps(delegatedProps);
     v-bind="forwarded"
     :class="
       cn(
-        'absolute top-1/2 -translate-y-1/2 right-0 disabled:cursor-not-allowed disabled:opacity-20 p-3',
+        'absolute top-1/2 right-0 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
         props.class,
       )
     "

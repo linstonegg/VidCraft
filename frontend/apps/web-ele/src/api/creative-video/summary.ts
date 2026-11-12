@@ -1,3 +1,0 @@
-import { projectApi } from './index.ts';
-import { loadProduction } from './production.ts';
-export function projectSummaries(){return projectApi.list().map(project=>{const p=loadProduction(project.id,project.duration);const approved=p.shots.filter(s=>s.versions.some(v=>v.id===s.adopted&&!v.rejected)).length;return {project,approved,shots:p.shots.length,running:p.jobs.filter(j=>j.status==='running').length,reconciling:p.jobs.filter(j=>j.status==='reconciling').length,failed:p.jobs.filter(j=>j.status==='failed').length,spent:p.ledger.filter(l=>l.kind==='结算').reduce((n,l)=>n+l.amount,0),held:p.jobs.filter(j=>j.status==='running'||j.status==='reconciling').reduce((n,j)=>n+j.cost,0),renders:p.renders.length,balance:p.balance};});}

@@ -3,14 +3,9 @@ import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-interface SharedData {
-  content: string;
-  payload: string;
-}
+const data = ref();
 
-const data = ref<SharedData>();
-
-const [Drawer, drawerApi] = useVbenDrawer<SharedData>({
+const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
     drawerApi.close();
   },
@@ -19,12 +14,10 @@ const [Drawer, drawerApi] = useVbenDrawer<SharedData>({
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
-      data.value = drawerApi.getData();
+      data.value = drawerApi.getData<Record<string, any>>();
     }
   },
 });
-
-defineExpose({ drawerApi });
 </script>
 <template>
   <Drawer title="数据共享示例">

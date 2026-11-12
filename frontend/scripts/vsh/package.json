@@ -1,12 +1,11 @@
 {
   "name": "@vben/vsh",
-  "version": "5.8.0",
+  "version": "5.7.0",
   "private": true,
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "stub": "pnpm exec tsdown",
-    "typecheck": "vue-tsc --noEmit"
+    "stub": "pnpm exec tsdown"
   },
   "files": [
     "dist"

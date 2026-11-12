@@ -9,15 +9,12 @@ import { cn } from '@vben-core/shared/utils';
 
 import { DialogContent, useForwardPropsEmits } from 'reka-ui';
 
-import { useDialogStateEvents } from '../dialog/use-dialog-state-events';
 import { sheetVariants } from './sheet';
 import SheetOverlay from './SheetOverlay.vue';
 
 interface SheetContentProps extends DialogContentProps {
   appendTo?: HTMLElement | string;
   class?: any;
-  /** Remove the overlay immediately when its cached page is inactive. */
-  inactive?: boolean;
   modal?: boolean;
   open?: boolean;
   overlayBlur?: number;
@@ -31,7 +28,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<SheetContentProps>(), {
   appendTo: 'body',
-  inactive: false,
 });
 
 const emits = defineEmits<
@@ -41,7 +37,6 @@ const emits = defineEmits<
 const delegatedProps = computed(() => {
   const {
     class: _,
-    inactive: _inactive,
     modal: _modal,
     open: _open,
     side: _side,
@@ -65,18 +60,21 @@ const position = computed(() => {
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 const contentRef = ref<InstanceType<typeof DialogContent> | null>(null);
-
-const { handleAnimationEvent } = useDialogStateEvents({
-  contentRef,
-  isOpen: () => props.open,
-  onClosed: () => emits('closed'),
-  onOpened: () => emits('opened'),
-});
+function onAnimationEnd(event: AnimationEvent) {
+  // 只有在 contentRef 的动画结束时才触发 opened/closed 事件
+  if (event.target === contentRef.value?.$el) {
+    if (props.open) {
+      emits('opened');
+    } else {
+      emits('closed');
+    }
+  }
+}
 </script>
 
 <template>
   <Teleport defer :to="appendTo">
-    <Transition v-if="!inactive" name="fade">
+    <Transition name="fade">
       <SheetOverlay
         v-if="open && modal"
         :style="{
@@ -94,8 +92,7 @@ const { handleAnimationEvent } = useDialogStateEvents({
         ...(zIndex ? { zIndex } : {}),
         position,
       }"
-      @animationend="handleAnimationEvent"
-      @animationcancel="handleAnimationEvent"
+      @animationend="onAnimationEnd"
       v-bind="{ ...forwarded, ...$attrs }"
     >
       <slot></slot>

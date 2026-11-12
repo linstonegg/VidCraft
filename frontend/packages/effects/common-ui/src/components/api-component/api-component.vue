@@ -44,14 +44,6 @@ const emit = defineEmits<{
 const modelValue = defineModel<any>({ default: undefined });
 
 const attrs = useAttrs();
-const usesDefaultModelValue = computed(() => {
-  return ['model-value', 'modelValue'].includes(props.modelPropName);
-});
-const currentModelValue = computed(() => {
-  return usesDefaultModelValue.value
-    ? modelValue.value
-    : attrs[props.modelPropName];
-});
 const innerParams = ref({});
 const refOptions = ref<OptionsItem[]>([]);
 const loading = ref(false);
@@ -97,14 +89,13 @@ const getOptions = computed(() => {
 });
 
 const bindProps = computed(() => {
-  const updateEvent = `onUpdate:${props.modelPropName}`;
   return {
-    [props.modelPropName]: unref(currentModelValue),
+    [props.modelPropName]: unref(modelValue),
     [props.optionsPropName]: unref(getOptions),
-    [updateEvent]: (val: string) => {
-      updateModelValue(val);
+    [`onUpdate:${props.modelPropName}`]: (val: string) => {
+      modelValue.value = val;
     },
-    ...objectOmit(attrs, [props.modelPropName, updateEvent]),
+    ...objectOmit(attrs, [`onUpdate:${props.modelPropName}`]),
     ...(props.visibleEvent
       ? {
           [props.visibleEvent]: handleFetchForVisible,
@@ -112,17 +103,6 @@ const bindProps = computed(() => {
       : {}),
   };
 });
-
-function updateModelValue(value: any) {
-  if (usesDefaultModelValue.value) {
-    modelValue.value = value;
-    return;
-  }
-  const updateHandler = attrs[`onUpdate:${props.modelPropName}`];
-  if (isFunction(updateHandler)) {
-    updateHandler(value);
-  }
-}
 
 async function fetchApi() {
   const { api, beforeFetch, shouldFetch, afterFetch, resultField } = props;
@@ -200,9 +180,9 @@ const mergedParams = computed(() => {
 });
 
 watch(
-  [() => props.api, mergedParams],
-  ([api, value], [oldApi, oldValue]) => {
-    if (api === oldApi && isEqual(value, oldValue)) {
+  mergedParams,
+  (value, oldValue) => {
+    if (isEqual(value, oldValue)) {
       return;
     }
     fetchApi();
@@ -212,7 +192,7 @@ watch(
 
 function emitChange() {
   if (
-    currentModelValue.value === undefined &&
+    modelValue.value === undefined &&
     props.autoSelect &&
     unref(getOptions).length > 0
   ) {
@@ -238,7 +218,7 @@ function emitChange() {
       }
     }
 
-    if (firstOption) updateModelValue(firstOption.value);
+    if (firstOption) modelValue.value = firstOption.value;
   }
   emit('optionsChange', unref(getOptions));
 }
@@ -247,7 +227,7 @@ defineExpose({
   /** 获取options数据 */
   getOptions: () => unref(getOptions),
   /** 获取当前值 */
-  getValue: () => unref(currentModelValue),
+  getValue: () => unref(modelValue),
   /** 获取被包装的组件实例 */
   getComponentRef: <T = any>() => componentRef.value as T,
   /** 更新Api参数 */

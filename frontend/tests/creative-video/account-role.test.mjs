@@ -1,3 +1,0 @@
-import assert from 'node:assert/strict';
-import {bindStudioRole,currentRole,allowed,canEmulateRole} from '../../apps/web-ele/src/api/creative-video/permissions.ts';
-globalThis.localStorage={getItem:()=> 'owner'};bindStudioRole('jack');assert.equal(currentRole(),'reviewer');assert.equal(allowed('generate'),false);assert.equal(canEmulateRole('owner'),false);bindStudioRole('admin');assert.equal(currentRole(),'editor');assert.equal(allowed('review'),false);bindStudioRole('vben');assert.equal(currentRole(),'owner');assert.equal(canEmulateRole('reviewer'),true);console.log('通过：账号角色绑定、越权本地设置无效、仅允许降权演示');

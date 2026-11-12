@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.antd'),
         },
         name: 'AntDesignDemos',
-        path: 'ant-design-next',
+        path: '/demos/ant-design-next',
         component: () => import('#/views/demos/antd/index.vue'),
       },
     ],

@@ -1,23 +1,25 @@
-import { defineConfig, viteCssLayerPlugin } from '@vben/vite-config';
+import process from 'node:process';
 
-import ElementPlus from 'unplugin-element-plus/vite';
+import { defineConfig } from '@vben/vite-config';
 
+/**
+ * VidCraft web-ele。
+ * 说明：M1 起改用「一次性引入 Element Plus 主题 CSS」，不再依赖
+ * unplugin-element-plus 的按组件样式注入，避免新增组件时 Vite 预构建
+ * 产生未解析的 `element-plus/es/components/xxx/style/css` 裸导入。
+ */
 export default defineConfig(async () => {
   return {
     application: {},
     vite: {
-      plugins: [
-        // element-plus 的 css 包进 @layer el，使 Tailwind 工具类可覆盖组件样式
-        viteCssLayerPlugin({ layerName: 'el', packageName: 'element-plus' }),
-        ElementPlus({ format: 'esm' }),
-      ],
       server: {
         proxy: {
           '/api': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
             // mock代理目标地址
-            target: 'http://localhost:5320/api',
+            target:
+              process.env.VITE_MOCK_PROXY_TARGET || 'http://localhost:5320/api',
             ws: true,
           },
         },

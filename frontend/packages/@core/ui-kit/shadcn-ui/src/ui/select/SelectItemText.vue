@@ -7,7 +7,7 @@ const props = defineProps<SelectItemTextProps>();
 </script>
 
 <template>
-  <SelectItemText data-slot="select-item-text" v-bind="props">
+  <SelectItemText v-bind="props">
     <slot></slot>
   </SelectItemText>
 </template>

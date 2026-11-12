@@ -2,17 +2,24 @@ import type { Linter } from 'eslint';
 
 import { interopDefault } from '../util';
 
-/**
- * @typescript-eslint 的规则已迁移到 oxlint（typescript 插件）。
- * 这里仅保留 TS 解析器，供其它 eslint 插件（perfectionist、n 等）解析 TS/TSX 文件。
- * 因不再有类型感知规则，已移除 parserOptions.project，eslint 解析更快。
- *
- * 注意：移除 @typescript-eslint 插件后，unused-imports/no-unused-vars 会退回核心实现，
- * 无法识别 TS 类型签名里的形参（会误报）。故对 TS/TSX/Vue 统一关闭该规则，
- * 未使用变量改由 oxlint 的 no-unused-vars（类型感知）负责。
- */
+const rulesCoveredByOxlint = new Set([
+  '@typescript-eslint/ban-ts-comment',
+  '@typescript-eslint/no-non-null-assertion',
+  '@typescript-eslint/no-unused-expressions',
+  '@typescript-eslint/no-unused-vars',
+  '@typescript-eslint/triple-slash-reference',
+]);
+
 export async function typescript(): Promise<Linter.Config[]> {
-  const parserTs = await interopDefault(import('@typescript-eslint/parser'));
+  const [pluginTs, parserTs] = await Promise.all([
+    interopDefault(import('@typescript-eslint/eslint-plugin')),
+    interopDefault(import('@typescript-eslint/parser')),
+  ] as const);
+  const strictRules = Object.fromEntries(
+    Object.entries(pluginTs.configs.strict?.rules ?? {}).filter(
+      ([ruleName]) => !rulesCoveredByOxlint.has(ruleName),
+    ),
+  );
 
   return [
     {
@@ -20,23 +27,30 @@ export async function typescript(): Promise<Linter.Config[]> {
       languageOptions: {
         parser: parserTs,
         parserOptions: {
+          createDefaultProgram: false,
           ecmaFeatures: {
             jsx: true,
           },
           ecmaVersion: 'latest',
           extraFileExtensions: ['.vue'],
           jsxPragma: 'React',
+          project: './tsconfig.*.json',
           sourceType: 'module',
         },
       },
-      rules: {
-        'unused-imports/no-unused-vars': 'off',
+      plugins: {
+        '@typescript-eslint': pluginTs as any,
       },
-    },
-    {
-      // Vue `<script>` 的未使用变量同样交给 oxlint，避免核心规则误报 TS 类型签名形参
-      files: ['**/*.vue'],
       rules: {
+        ...pluginTs.configs['eslint-recommended']?.overrides?.[0]?.rules,
+        ...strictRules,
+        // '@typescript-eslint/consistent-type-definitions': ['warn', 'interface'],
+        '@typescript-eslint/consistent-type-definitions': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-namespace': 'off',
+        '@typescript-eslint/no-use-before-define': 'off',
         'unused-imports/no-unused-vars': 'off',
       },
     },

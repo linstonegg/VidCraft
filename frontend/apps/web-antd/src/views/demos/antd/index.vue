@@ -12,8 +12,7 @@ function info() {
 function error() {
   message.error({
     content: 'Once upon a time you dressed so fine',
-    // ant-design-vue 的 message.duration 单位是「秒」, 不是毫秒
-    duration: 2.5,
+    duration: 2500,
   });
 }
 
@@ -26,8 +25,7 @@ function success() {
 
 function notify(type: NotificationType) {
   notification[type]({
-    // ant-design-vue 的 notification.duration 单位是「秒」, 不是毫秒
-    duration: 2.5,
+    duration: 2500,
     message: '说点啥呢',
     type,
   });

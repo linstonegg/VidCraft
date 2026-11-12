@@ -1,5 +1,3 @@
-import type { PreferencesExtension } from '../src/types';
-
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { defaultPreferences } from '../src/config';
@@ -26,80 +24,41 @@ describe('preferences', () => {
     })),
   );
 
-  // 持有 stub 的 mock 引用：断言与重置都走 mock 本体，
-  // 避免经由全局 Storage 类型读取方法引用（unbound-method 误报）。
-  const createStorageMock = () => ({
+  vi.stubGlobal('localStorage', {
     clear: vi.fn(),
-    getItem: vi.fn((_key: string): null | string => null),
-    key: vi.fn((_index: number): null | string => null),
+    getItem: vi.fn(() => null),
+    key: vi.fn(() => null),
     length: 0,
     removeItem: vi.fn(),
     setItem: vi.fn(),
   });
 
-  const localStorageMock = createStorageMock();
-
-  const sessionStorageMock = createStorageMock();
-
-  vi.stubGlobal('localStorage', localStorageMock);
-
-  vi.stubGlobal('sessionStorage', sessionStorageMock);
+  vi.stubGlobal('sessionStorage', {
+    clear: vi.fn(),
+    getItem: vi.fn(() => null),
+    key: vi.fn(() => null),
+    length: 0,
+    removeItem: vi.fn(),
+    setItem: vi.fn(),
+  });
 
   beforeAll(async () => {
     ({ PreferenceManager } = await import('../src/preferences'));
   });
 
   beforeEach(() => {
-    localStorageMock.getItem.mockImplementation(() => null);
-    localStorageMock.removeItem.mockReset();
-    localStorageMock.setItem.mockReset();
-    sessionStorageMock.getItem.mockImplementation(() => null);
-    sessionStorageMock.removeItem.mockReset();
-    sessionStorageMock.setItem.mockReset();
+    vi.mocked(localStorage.getItem).mockImplementation(() => null);
+    vi.mocked(localStorage.removeItem).mockReset();
+    vi.mocked(localStorage.setItem).mockReset();
+    vi.mocked(sessionStorage.getItem).mockImplementation(() => null);
+    vi.mocked(sessionStorage.removeItem).mockReset();
+    vi.mocked(sessionStorage.setItem).mockReset();
     preferenceManager = new PreferenceManager();
   });
 
   it('loads default preferences if no saved preferences found', () => {
     const preferences = preferenceManager.getPreferences();
     expect(preferences).toEqual(defaultPreferences);
-  });
-
-  it('uses memory storage until preferences are initialized', async () => {
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    vi.useFakeTimers();
-
-    try {
-      const manager = new PreferenceManager();
-      manager.updatePreferences({ app: { locale: 'en-US' } });
-      await vi.advanceTimersByTimeAsync(151);
-
-      expect(localStorageMock.setItem).not.toHaveBeenCalled();
-
-      await manager.initPreferences({
-        namespace: 'testNamespace',
-      });
-      localStorageMock.setItem.mockClear();
-
-      manager.updatePreferences({ app: { locale: 'en-US' } });
-      await vi.advanceTimersByTimeAsync(151);
-
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        'testNamespace-preferences',
-        expect.any(String),
-      );
-      expect(
-        localStorageMock.setItem.mock.calls.every(([key]) =>
-          key.startsWith('testNamespace-'),
-        ),
-      ).toBe(true);
-      expect(warnSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining('empty prefix'),
-      );
-    } finally {
-      vi.clearAllTimers();
-      warnSpy.mockRestore();
-      vi.useRealTimers();
-    }
   });
 
   it('initializes preferences with overrides', async () => {
@@ -158,22 +117,6 @@ describe('preferences', () => {
     await preferenceManager.resetPreferences();
 
     expect(preferenceManager.getPreferences()).toEqual(defaultPreferences);
-  });
-
-  it('applies reset side effects before persisting preferences', async () => {
-    preferenceManager.updatePreferences({
-      theme: {
-        mode: 'light',
-      },
-    });
-    expect(document.documentElement.classList.contains('dark')).toBe(false);
-
-    const resetPromise = preferenceManager.resetPreferences();
-
-    expect(preferenceManager.getPreferences().theme.mode).toBe('dark');
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
-
-    await resetPromise;
   });
 
   it('updates isMobile correctly', () => {
@@ -315,7 +258,7 @@ describe('preferences', () => {
   });
 
   it('initializes custom preferences extension with default values', async () => {
-    const extension: PreferencesExtension = {
+    const extension = {
       fields: [
         {
           component: 'switch',
@@ -336,7 +279,7 @@ describe('preferences', () => {
       ],
       tabLabel: '扩展',
       title: '业务偏好',
-    };
+    } as const;
 
     await preferenceManager.initPreferences({
       extension,
@@ -351,7 +294,7 @@ describe('preferences', () => {
   });
 
   it('does not expose mutable custom preference baselines or extension schema', async () => {
-    const extension: PreferencesExtension = {
+    const extension = {
       fields: [
         {
           component: 'number',
@@ -367,7 +310,7 @@ describe('preferences', () => {
       ],
       tabLabel: '扩展',
       title: '业务偏好',
-    };
+    } as const;
 
     await preferenceManager.initPreferences({
       extension,
@@ -536,7 +479,7 @@ describe('preferences', () => {
   });
 
   it('filters cached custom number values that violate field constraints', async () => {
-    localStorageMock.getItem.mockImplementation((key) => {
+    vi.mocked(localStorage.getItem).mockImplementation((key) => {
       if (key.endsWith('cache-preferences-custom')) {
         return JSON.stringify({
           value: {

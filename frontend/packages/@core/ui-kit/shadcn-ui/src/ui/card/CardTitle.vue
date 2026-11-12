@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue';
-
 import { cn } from '@vben-core/shared/utils';
 
 const props = defineProps<{
-  class?: HTMLAttributes['class'];
+  class?: any;
 }>();
 </script>
 
 <template>
-  <h3
-    data-slot="card-title"
-    :class="cn('leading-none font-semibold', props.class)"
-  >
+  <h3 :class="cn('leading-none font-semibold tracking-tight', props.class)">
     <slot></slot>
   </h3>
 </template>

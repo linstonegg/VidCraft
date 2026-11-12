@@ -2,7 +2,7 @@ import type { VxeGridSlots, VxeGridSlotTypes } from 'vxe-table';
 
 import type { SlotsType } from 'vue';
 
-import type { BaseFormComponentType, FormValues } from '@vben-core/form-ui';
+import type { BaseFormComponentType } from '@vben-core/form-ui';
 
 import type { ExtendedVxeGridApi, VxeGridProps } from './types';
 
@@ -14,35 +14,33 @@ import { VxeGridApi } from './api';
 import VxeGrid from './use-vxe-grid.vue';
 
 type FilteredSlots<T> = {
-  [
-    K in keyof VxeGridSlots<T> as K extends 'form' ? never : K
-  ]: VxeGridSlots<T>[K];
+  [K in keyof VxeGridSlots<T> as K extends 'form'
+    ? never
+    : K]: VxeGridSlots<T>[K];
 };
 
 export function useVbenVxeGrid<
   T extends Record<string, any> = any,
   D extends BaseFormComponentType = BaseFormComponentType,
-  P extends Record<string, any> = Record<string, never>,
-  TFormValues extends FormValues = FormValues,
-  TSubmitValues extends FormValues = TFormValues,
->(options: VxeGridProps<T, D, P, TFormValues, TSubmitValues>) {
+  P extends Record<string, any> = Record<never, never>,
+>(options: VxeGridProps<T, D, P>) {
   // const IS_REACTIVE = isReactive(options);
-  const api = new VxeGridApi<T, D, P, TFormValues, TSubmitValues>(options);
-  const extendedApi: ExtendedVxeGridApi<T, D, P, TFormValues, TSubmitValues> =
-    api as ExtendedVxeGridApi<T, D, P, TFormValues, TSubmitValues>;
+  const api = new VxeGridApi<T, D, P>(options);
+  const extendedApi: ExtendedVxeGridApi<T, D, P> = api as ExtendedVxeGridApi<
+    T,
+    D,
+    P
+  >;
   extendedApi.useStore = (selector) => {
     return useStore(api.store, selector);
   };
 
   const Grid = defineComponent(
-    (
-      props: VxeGridProps<T, D, P, TFormValues, TSubmitValues>,
-      { attrs, slots },
-    ) => {
+    (props: VxeGridProps<T, D, P>, { attrs, slots }) => {
       onBeforeUnmount(() => {
         api.unmount();
       });
-      api.setState({ ...props, ...attrs });
+      api.setState({ ...props, ...attrs } as Partial<VxeGridProps<T, D, P>>);
       return () =>
         h(
           VxeGrid,
@@ -50,7 +48,7 @@ export function useVbenVxeGrid<
             ...props,
             ...attrs,
             api: extendedApi as ExtendedVxeGridApi,
-          } as any,
+          },
           slots,
         );
     },

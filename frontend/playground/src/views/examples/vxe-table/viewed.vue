@@ -35,11 +35,6 @@ const gridOptions: VxeGridProps<RowType> = {
     {
       align: 'center',
       cellRender: {
-        props: {
-          renderMode: 'menu',
-          // 指定收集到菜单中的按钮（默认收集所有操作按钮）
-          menuCodes: ['edit'],
-        },
         attrs: {
           nameField: 'category',
           onClick: onActionClick,
@@ -58,7 +53,7 @@ const gridOptions: VxeGridProps<RowType> = {
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.menu.operation'),
-      width: 120,
+      width: 200,
     },
   ],
   exportConfig: {},

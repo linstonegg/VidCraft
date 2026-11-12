@@ -38,7 +38,13 @@ async function handleSubmit(e: Event) {
     return;
   }
 
-  await props.formApi.validateAndSubmit();
+  const { valid } = await props.formApi.validate();
+  if (!valid) {
+    return;
+  }
+
+  const values = toRaw(await props.formApi.getValues()) ?? {};
+  await props.handleSubmit?.(values);
 }
 
 async function handleReset(e: Event) {
@@ -51,7 +57,7 @@ async function handleReset(e: Event) {
   if (isFunction(props.handleReset)) {
     await props.handleReset?.(values);
   } else {
-    form.reset();
+    form.resetForm();
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@vben-core/preferences",
-  "version": "5.8.0",
+  "version": "5.7.0",
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -11,8 +11,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "#build": "pnpm exec tsdown",
-    "typecheck": "vue-tsc --noEmit"
+    "#build": "pnpm exec tsdown"
   },
   "files": [
     "dist",

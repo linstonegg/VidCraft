@@ -53,8 +53,8 @@ interface RequestInterceptorConfig {
   fulfilled?: (
     config: ExtendOptions & InternalAxiosRequestConfig,
   ) =>
-    | (ExtendOptions & InternalAxiosRequestConfig)
-    | Promise<ExtendOptions & InternalAxiosRequestConfig>;
+    | (ExtendOptions & InternalAxiosRequestConfig<any>)
+    | Promise<ExtendOptions & InternalAxiosRequestConfig<any>>;
   rejected?: (error: any) => any;
 }
 

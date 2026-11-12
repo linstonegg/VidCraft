@@ -11,9 +11,7 @@ const transitionProgress = defineModel<boolean>('transitionProgress', {
   // 默认值
   default: false,
 });
-const transitionName = defineModel<string | undefined>('transitionName', {
-  default: undefined,
-});
+const transitionName = defineModel<string>('transitionName');
 const transitionEnable = defineModel<boolean>('transitionEnable');
 const transitionLoading = defineModel<boolean>('transitionLoading');
 
@@ -47,10 +45,7 @@ function handleClick(value: string) {
       class="outline-box p-2"
       @click="handleClick(item)"
     >
-      <div
-        :class="`${item}-slow`"
-        class="h-10 w-12 rounded-md bg-primary"
-      ></div>
+      <div :class="`${item}-slow`" class="h-10 w-12 rounded-md bg-accent"></div>
     </div>
   </div>
 </template>

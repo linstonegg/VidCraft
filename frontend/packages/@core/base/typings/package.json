@@ -1,6 +1,6 @@
 {
   "name": "@vben-core/typings",
-  "version": "5.8.0",
+  "version": "5.7.0",
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -11,11 +11,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "pnpm exec tsdown",
-    "typecheck": "vue-tsc --noEmit"
+    "build": "pnpm exec tsdown"
   },
   "files": [
-    "dist"
+    "dist",
+    "vue-router.d.ts"
   ],
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -26,6 +26,9 @@
       "development": "./src/index.ts",
       "production": "./src/index.ts",
       "default": "./dist/index.mjs"
+    },
+    "./vue-router": {
+      "types": "./vue-router.d.ts"
     }
   },
   "publishConfig": {

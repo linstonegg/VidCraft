@@ -6,7 +6,6 @@ import { preferences } from '@vben/preferences';
 import { getTabKey, storeToRefs, useTabbarStore } from '@vben/stores';
 
 import { transformComponent, useLayoutHook } from '../hooks';
-import { getCachedTabKeys } from './cached-tab-keys';
 
 const route = useRoute();
 
@@ -27,7 +26,9 @@ const computedCachedRouteKeys = computed(() => {
   if (!unref(enableTabbar)) {
     return [];
   }
-  return getCachedTabKeys(unref(getTabs));
+  return unref(getTabs)
+    .filter((item) => item.meta.domCached)
+    .map((item) => getTabKey(item));
 });
 
 /**

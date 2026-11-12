@@ -61,13 +61,6 @@ The configuration method of static routes and dynamic routes is the same. Below 
 
 ### Secondary Routes
 
-::: tip
-
-- Only top-level routes should start their `path` with `/`; routes inside `children` should use relative segments such as `about` or `menu1`.
-- When a parent route does not define `redirect`, the framework automatically fills it with the first child route. This only works when child paths stay relative.
-
-:::
-
 ::: details Secondary Route Example Code
 
 ```ts
@@ -75,6 +68,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { VBEN_LOGO_URL } from '@vben/constants';
 
+import { BasicLayout } from '#/layouts';
 import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
@@ -88,10 +82,11 @@ const routes: RouteRecordRaw[] = [
     },
     name: 'VbenProject',
     path: '/vben-admin',
+    redirect: '/vben-admin/about',
     children: [
       {
         name: 'VbenAbout',
-        path: 'about',
+        path: '/vben-admin/about',
         component: () => import('#/views/_core/about/index.vue'),
         meta: {
           badgeType: 'dot',
@@ -113,7 +108,6 @@ export default routes;
 
 ::: tip
 
-- Multi-level routes follow the same rule: keep top-level paths absolute and child paths relative, instead of repeating the full path inside `children`.
 - The parent route of multi-level routes does not need to set the `component` property, just set the `children` property. Unless you really need to display content nested under the parent route.
 - In most cases, the `redirect` property of the parent route does not need to be specified, it will default to the first child route.
 
@@ -124,6 +118,7 @@ export default routes;
 ```ts
 import type { RouteRecordRaw } from 'vue-router';
 
+import { BasicLayout } from '#/layouts';
 import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
@@ -136,6 +131,7 @@ const routes: RouteRecordRaw[] = [
     },
     name: 'Demos',
     path: '/demos',
+    redirect: '/demos/access',
     children: [
       // Nested menu
       {
@@ -144,11 +140,12 @@ const routes: RouteRecordRaw[] = [
           title: $t('demos.nested.title'),
         },
         name: 'NestedDemos',
-        path: 'nested',
+        path: '/demos/nested',
+        redirect: '/demos/nested/menu1',
         children: [
           {
             name: 'Menu1Demo',
-            path: 'menu1',
+            path: '/demos/nested/menu1',
             component: () => import('#/views/demos/nested/menu-1.vue'),
             meta: {
               icon: 'ic:round-menu',
@@ -158,16 +155,17 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'Menu2Demo',
-            path: 'menu2',
+            path: '/demos/nested/menu2',
             meta: {
               icon: 'ic:round-menu',
               keepAlive: true,
               title: $t('demos.nested.menu2'),
             },
+            redirect: '/demos/nested/menu2/menu2-1',
             children: [
               {
                 name: 'Menu21Demo',
-                path: 'menu2-1',
+                path: '/demos/nested/menu2/menu2-1',
                 component: () => import('#/views/demos/nested/menu-2-1.vue'),
                 meta: {
                   icon: 'ic:round-menu',
@@ -179,11 +177,12 @@ const routes: RouteRecordRaw[] = [
           },
           {
             name: 'Menu3Demo',
-            path: 'menu3',
+            path: '/demos/nested/menu3',
             meta: {
               icon: 'ic:round-menu',
               title: $t('demos.nested.menu3'),
             },
+            redirect: '/demos/nested/menu3/menu3-1',
             children: [
               {
                 name: 'Menu31Demo',
@@ -202,10 +201,11 @@ const routes: RouteRecordRaw[] = [
                   icon: 'ic:round-menu',
                   title: $t('demos.nested.menu3_2'),
                 },
+                redirect: '/demos/nested/menu3/menu3-2/menu3-2-1',
                 children: [
                   {
                     name: 'Menu321Demo',
-                    path: 'menu3-2-1',
+                    path: '/demos/nested/menu3/menu3-2/menu3-2-1',
                     component: () =>
                       import('#/views/demos/nested/menu-3-2-1.vue'),
                     meta: {
@@ -242,6 +242,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { VBEN_LOGO_URL } from '@vben/constants';
 
+import { BasicLayout } from '#/layouts';
 import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
@@ -252,10 +253,11 @@ const routes: RouteRecordRaw[] = [
     },
     name: 'Home',
     path: '/home',
+    redirect: '/home/index',
     children: [
       {
         name: 'HomeIndex',
-        path: 'index',
+        path: '/home/index',
         component: () => import('#/views/home/index.vue'),
         meta: {
           icon: 'mdi:home',
@@ -292,11 +294,11 @@ The route configuration items are mainly in the `meta` property of the route obj
 ```ts {5-8}
 const routes = [
   {
-    name: 'Home',
-    path: '/home',
+    name: 'HomeIndex',
+    path: '/home/index',
     meta: {
       icon: 'mdi:home',
-      title: $t('page.home.title'),
+      title: $t('page.home.index'),
     },
   },
 ];
@@ -314,11 +316,6 @@ interface RouteMeta {
    * The currently active menu, sometimes you don't want to activate the existing menu, use this to activate the parent menu
    */
   activePath?: string;
-  /**
-   * Whether to use the route hierarchy resolved from activePath in breadcrumbs
-   * @default false
-   */
-  breadcrumbUseActivePath?: boolean;
   /**
    * Whether to fix the tab
    * @default false
@@ -517,13 +514,6 @@ Used to configure the badge color of the page.
 - Default: `''`
 
 Used to configure the currently active menu. Sometimes the page is not displayed in the menu, and this is used to activate the parent menu.
-
-### breadcrumbUseActivePath
-
-- Type: `boolean`
-- Default: `false`
-
-When set to `true`, the breadcrumb supplements the current route matches with the route hierarchy resolved from `activePath`. This is useful for detail pages and other routes that are not nested under the target menu route but still need to display the complete breadcrumb hierarchy.
 
 ### affixTab
 

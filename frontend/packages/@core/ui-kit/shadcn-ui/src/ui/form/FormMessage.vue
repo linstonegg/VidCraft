@@ -1,24 +1,18 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue';
+import { toValue } from 'vue';
 
-import { cn } from '@vben-core/shared/utils';
+import { ErrorMessage } from 'vee-validate';
 
 import { useFormField } from './useFormField';
 
-const props = defineProps<{
-  class?: HTMLAttributes['class'];
-}>();
-
-const { error, formMessageId } = useFormField();
+const { formMessageId, name } = useFormField();
 </script>
 
 <template>
-  <p
-    v-if="error"
+  <ErrorMessage
     :id="formMessageId"
-    data-slot="form-message"
-    :class="cn('text-destructive text-sm', props.class)"
-  >
-    {{ error }}
-  </p>
+    :name="toValue(name)"
+    as="p"
+    class="text-destructive text-[0.8rem]"
+  />
 </template>

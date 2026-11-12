@@ -1,6 +1,6 @@
 {
   "name": "@vben-core/popup-ui",
-  "version": "5.8.0",
+  "version": "5.7.0",
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -12,8 +12,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm exec tsdown",
-    "prepublishOnly": "npm run build",
-    "typecheck": "vue-tsc --noEmit"
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
@@ -43,7 +42,6 @@
   "dependencies": {
     "@vben-core/composables": "workspace:*",
     "@vben-core/icons": "workspace:*",
-    "@vben-core/preferences": "workspace:*",
     "@vben-core/shadcn-ui": "workspace:*",
     "@vben-core/shared": "workspace:*",
     "@vben-core/typings": "workspace:*",

@@ -1,6 +1,7 @@
 import type { Sortable } from '@vben-core/composables';
+import type { EmitType } from '@vben-core/typings';
 
-import type { TabsEmits, TabsProps } from './types';
+import type { TabsProps } from './types';
 
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
@@ -14,13 +15,7 @@ function findParentElement(element: HTMLElement) {
     : element.closest(`.${parentCls}`);
 }
 
-// 只会 emit sortTabs：事件签名从 types.ts 的 TabsEmits 推导（单一真源，
-// 此前的宽泛 EmitType 依赖 helper.d.ts 里未定义的 Name，error-type
-// 掩盖了不兼容）。
-export function useTabsDrag(
-  props: TabsProps,
-  emit: (evt: 'sortTabs', ...args: TabsEmits['sortTabs']) => void,
-) {
+export function useTabsDrag(props: TabsProps, emit: EmitType) {
   const sortableInstance = ref<null | Sortable>(null);
 
   async function initTabsSortable() {
@@ -53,19 +48,19 @@ export function useTabsDrag(
         const { srcElement } = (evt as any).originalEvent;
 
         if (!srcElement) {
-          void resetElState();
+          resetElState();
           return;
         }
 
         const srcParent = findParentElement(srcElement);
 
         if (!srcParent) {
-          void resetElState();
+          resetElState();
           return;
         }
 
         if (!srcParent.classList.contains('draggable')) {
-          void resetElState();
+          resetElState();
 
           return;
         }
@@ -79,7 +74,7 @@ export function useTabsDrag(
         ) {
           emit('sortTabs', oldIndex, newIndex);
         }
-        void resetElState();
+        resetElState();
       },
       onMove(evt) {
         const parent = findParentElement(evt.related);
@@ -110,7 +105,7 @@ export function useTabsDrag(
       return;
     }
     await nextTick();
-    await initTabsSortable();
+    initTabsSortable();
   }
 
   onMounted(init);
@@ -119,7 +114,7 @@ export function useTabsDrag(
     () => props.styleType,
     () => {
       sortableInstance.value?.destroy();
-      void init();
+      init();
     },
   );
 

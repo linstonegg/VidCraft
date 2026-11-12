@@ -14,7 +14,7 @@ describe('useSortable', () => {
   });
   it('should call Sortable.create with the correct options', async () => {
     // Create a mock element
-    const mockElement = document.createElement('div');
+    const mockElement = document.createElement('div') as HTMLDivElement;
 
     // Define custom options
     const customOptions: SortableOptions = {

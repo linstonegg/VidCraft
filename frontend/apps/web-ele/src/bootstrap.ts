@@ -3,7 +3,7 @@ import { createApp, watchEffect } from 'vue';
 import { registerAccessDirective } from '@vben/access';
 import { registerLoadingDirective } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
-import { initStores, useUserStore, useTabbarStore } from '@vben/stores';
+import { initStores } from '@vben/stores';
 import '@vben/styles';
 import '@vben/styles/ele';
 
@@ -16,8 +16,6 @@ import { initComponentAdapter } from './adapter/component';
 import { initSetupVbenForm } from './adapter/form';
 import App from './app.vue';
 import { router } from './router';
-import { bindStudioRole } from '#/api/creative-video/permissions';
-import { bindStudioAccount, migrateLegacyAccount } from '#/api/creative-video/storage';
 
 async function bootstrap(namespace: string) {
   // 初始化组件适配器
@@ -50,11 +48,6 @@ async function bootstrap(namespace: string) {
 
   // 配置 pinia-tore
   await initStores(app, { namespace });
-  const tabbar=useTabbarStore();
-  const templatePaths=['/demos','/vben-admin','/dashboard/workspace','/dashboard/analytics','/profile'];
-  tabbar.tabs=tabbar.tabs.filter(tab=>!templatePaths.some(path=>tab.path===path||tab.path.startsWith(`${path}/`)));
-  await tabbar.updateCacheTabs();
-  watchEffect(() => {const username=useUserStore().userInfo?.username;bindStudioAccount(username || 'guest');bindStudioRole(username);if(username)migrateLegacyAccount(username);}, {flush:'sync'});
 
   // 安装权限指令
   registerAccessDirective(app);

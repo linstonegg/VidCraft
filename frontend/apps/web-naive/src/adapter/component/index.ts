@@ -223,10 +223,11 @@ async function initComponentAdapter() {
     IconPicker: withDefaultPlaceholder(IconPicker, 'select', {
       iconSlot: 'suffix',
       inputComponent: NInput,
-      modelValueProp: 'value',
     }),
     Input: withDefaultPlaceholder(NInput, 'input'),
-    InputNumber: withDefaultPlaceholder(NInputNumber, 'input'),
+    InputNumber: withDefaultPlaceholder(NInputNumber, 'input', {
+      style: { width: '100%' },
+    }),
     RadioGroup: (props, { attrs, slots }) => {
       let defaultSlot;
       if (Reflect.has(slots, 'default')) {

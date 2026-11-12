@@ -1,8 +1,8 @@
-import type { ComponentPublicInstance } from 'vue';
-
 import type { TabsProps } from './types';
 
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+
+import { VbenScrollbar } from '@vben-core/shadcn-ui';
 
 import { useDebounceFn } from '@vueuse/core';
 
@@ -12,7 +12,7 @@ export function useTabsViewScroll(props: TabsProps) {
   let resizeObserver: null | ResizeObserver = null;
   let mutationObserver: MutationObserver | null = null;
   let tabItemCount = 0;
-  const scrollbarRef = ref<ComponentPublicInstance | null>(null);
+  const scrollbarRef = ref<InstanceType<typeof VbenScrollbar> | null>(null);
   const scrollViewportEl = ref<DomElement>(null);
   const showScrollButton = ref(false);
   const scrollIsAtLeft = ref(true);
@@ -46,7 +46,7 @@ export function useTabsViewScroll(props: TabsProps) {
       left:
         direction === 'left'
           ? -(scrollbarWidth - distance)
-          : scrollbarWidth - distance,
+          : +(scrollbarWidth - distance),
     });
   }
 
@@ -63,17 +63,17 @@ export function useTabsViewScroll(props: TabsProps) {
     );
 
     scrollViewportEl.value = viewportEl;
-    await calcShowScrollbarButton();
+    calcShowScrollbarButton();
 
     await nextTick();
-    await scrollToActiveIntoView();
+    scrollToActiveIntoView();
 
     // 监听大小变化
     resizeObserver?.disconnect();
     resizeObserver = new ResizeObserver(
       useDebounceFn((_entries: ResizeObserverEntry[]) => {
-        void calcShowScrollbarButton();
-        void scrollToActiveIntoView();
+        calcShowScrollbarButton();
+        scrollToActiveIntoView();
       }, 100),
     );
     resizeObserver.observe(viewportEl);
@@ -87,11 +87,11 @@ export function useTabsViewScroll(props: TabsProps) {
       ).length;
 
       if (count > tabItemCount) {
-        void scrollToActiveIntoView();
+        scrollToActiveIntoView();
       }
 
       if (count !== tabItemCount) {
-        void calcShowScrollbarButton();
+        calcShowScrollbarButton();
         tabItemCount = count;
       }
     });
@@ -154,7 +154,7 @@ export function useTabsViewScroll(props: TabsProps) {
     async () => {
       // 200为了等待 tab 切换动画完成
       // setTimeout(() => {
-      await scrollToActiveIntoView();
+      scrollToActiveIntoView();
       // }, 300);
     },
     {
@@ -176,7 +176,7 @@ export function useTabsViewScroll(props: TabsProps) {
   watch(
     () => props.styleType,
     () => {
-      void initScrollbar();
+      initScrollbar();
     },
   );
 

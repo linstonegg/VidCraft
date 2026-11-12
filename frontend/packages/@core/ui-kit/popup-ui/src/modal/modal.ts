@@ -150,36 +150,23 @@ export interface ModalProps {
 export interface ModalState extends ModalProps {
   /** 弹窗打开状态 */
   isOpen?: boolean;
+  /**
+   * 共享数据
+   */
+  sharedData?: Record<string, any>;
 }
 
-export type ExtendedModalApi<TData = unknown> = ModalApi<TData> & {
+export type ExtendedModalApi = ModalApi & {
   useStore: <T = NoInfer<ModalState>>(
     selector?: (state: NoInfer<ModalState>) => T,
   ) => Readonly<Ref<T>>;
 };
 
-type ModalComponentInstance<TComponent extends Component> =
-  TComponent extends abstract new (...args: any[]) => infer TInstance
-    ? TInstance
-    : never;
-
-export type InferModalData<TComponent extends Component> = [
-  ModalComponentInstance<TComponent>,
-] extends [never]
-  ? unknown
-  : ModalComponentInstance<TComponent> extends {
-        modalApi: ExtendedModalApi<infer TData>;
-      }
-    ? TData
-    : unknown;
-
-export interface ModalApiOptions<
-  TConnectedComponent extends Component = Component,
-> extends ModalState {
+export interface ModalApiOptions extends ModalState {
   /**
    * 独立的弹窗组件
    */
-  connectedComponent?: TConnectedComponent;
+  connectedComponent?: Component;
   /**
    * 关闭前的回调，返回 false 可以阻止关闭
    * @returns

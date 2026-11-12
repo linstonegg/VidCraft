@@ -9,10 +9,6 @@ defineOptions({
   name: 'FormModelDemo',
 });
 
-interface FormModalData {
-  values?: Record<string, unknown>;
-}
-
 const [Form, formApi] = useVbenForm({
   handleSubmit: onSubmit,
   schema: [
@@ -37,7 +33,6 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'Select',
       componentProps: {
-        class: 'w-full',
         options: [
           { label: '选项1', value: '1' },
           { label: '选项2', value: '2' },
@@ -52,27 +47,25 @@ const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
 });
 
-const [Modal, modalApi] = useVbenModal<FormModalData>({
+const [Modal, modalApi] = useVbenModal({
   fullscreenButton: false,
   onCancel() {
     modalApi.close();
   },
   onConfirm: async () => {
-    await formApi.validateAndSubmit();
+    await formApi.validateAndSubmitForm();
     // modalApi.close();
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
-      const data = modalApi.getData();
-      if (data?.values) {
-        formApi.setValues(data.values);
+      const { values } = modalApi.getData<Record<string, any>>();
+      if (values) {
+        formApi.setValues(values);
       }
     }
   },
   title: '内嵌表单示例',
 });
-
-defineExpose({ modalApi });
 
 function onSubmit(values: Record<string, any>) {
   message.loading({

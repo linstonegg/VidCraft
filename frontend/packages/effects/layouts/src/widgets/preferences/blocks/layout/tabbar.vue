@@ -21,14 +21,10 @@ const tabbarPersist = defineModel<boolean>('tabbarPersist');
 const tabbarVisitHistory = defineModel<boolean>('tabbarVisitHistory');
 const tabbarDraggable = defineModel<boolean>('tabbarDraggable');
 const tabbarWheelable = defineModel<boolean>('tabbarWheelable');
-const tabbarStyleType = defineModel<string | undefined>('tabbarStyleType', {
-  default: undefined,
-});
+const tabbarStyleType = defineModel<string>('tabbarStyleType');
 const tabbarShowMore = defineModel<boolean>('tabbarShowMore');
 const tabbarShowMaximize = defineModel<boolean>('tabbarShowMaximize');
-const tabbarMaxCount = defineModel<number | undefined>('tabbarMaxCount', {
-  default: undefined,
-});
+const tabbarMaxCount = defineModel<number>('tabbarMaxCount');
 const tabbarMiddleClickToClose = defineModel<boolean>(
   'tabbarMiddleClickToClose',
 );

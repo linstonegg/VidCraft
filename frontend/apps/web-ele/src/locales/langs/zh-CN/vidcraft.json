@@ -1,0 +1,141 @@
+{
+  "appName": "VidCraft",
+  "appSubtitle": "AI 创意营销视频 Agent",
+  "dashboardMenu": "工作台",
+  "projects": "项目中心",
+  "projectsNew": "新建项目",
+  "assets": "素材库",
+  "tasks": "生成任务",
+  "billing": "积分与账单",
+  "settings": "设置",
+  "studio": "AI 创作工作台",
+  "mockBanner": "当前项目数据、AI 结果、生成任务与积分记录均为模拟数据，不会调用真实 AI 模型、不会产生真实费用。",
+  "mockBadge": "Mock 演示",
+  "backToProjects": "返回项目列表",
+  "common": {
+    "retry": "重试",
+    "refresh": "刷新",
+    "search": "搜索",
+    "resetDemo": "恢复演示数据",
+    "loading": "加载中…",
+    "empty": "暂无数据",
+    "notAvailable": "尚未开放",
+    "goBack": "返回"
+  },
+  "states": {
+    "loading": "正在加载演示数据…",
+    "emptyTitle": "这里还没有内容",
+    "emptyDesc": "M0 阶段只提供工程骨架，M1 起会在此承接真实业务。",
+    "errorTitle": "演示服务暂时不可用",
+    "errorDesc": "请确认 Nitro Mock 服务已启动，或稍后重试。",
+    "forbiddenTitle": "当前演示角色无权访问该页面",
+    "notFoundTitle": "项目不存在或已被移除",
+    "notFoundDesc": "请返回项目中心，选择一个演示项目重新进入。",
+    "projectNotFound": "项目不存在或已被移除"
+  },
+  "dashboard": {
+    "title": "VidCraft 工作台",
+    "subtitle": "演示环境：从产品网址到创意、分镜与成片的完整链路将在 M1～M4 逐步开放。",
+    "projectTotal": "演示项目",
+    "inProgress": "进行中的项目",
+    "mockHealth": "Mock 服务",
+    "mockHealthOk": "Mock 服务可用",
+    "mockHealthFailed": "Mock 服务不可用",
+    "healthChecking": "正在探测 Mock 服务…",
+    "startDemo": "开始演示路径",
+    "startDemoDesc": "登录 → 项目中心 → 打开 3D 简历项目 → 全屏 Studio 八步流程。",
+    "goProjects": "前往项目中心",
+    "roleScope": "当前演示角色",
+    "roleScopeDesc": "角色差异只在菜单和占位操作上演示，不等于真实安全授权。",
+    "nextMilestone": "M1 下一步",
+    "nextMilestoneDesc": "新建项目与产品资料采集（/projects/new、/studio/:id/ingest）。"
+  },
+  "projectsPage": {
+    "title": "项目中心",
+    "subtitle": "以下为固定演示种子数据，由 Nitro Mock 通过 HTTP 返回。",
+    "searchPlaceholder": "按项目名称或描述搜索",
+    "resetSuccess": "演示数据已恢复初始状态",
+    "listLoaded": "项目列表已加载",
+    "openStudio": "进入 Studio",
+    "newProject": "新建项目",
+    "emptyTitle": "还没有项目",
+    "emptyDesc": "M0 项目列表由 Mock 提供，若为空可尝试恢复演示数据。",
+    "duration": "目标时长",
+    "stage": "当前阶段",
+    "platform": "投放平台",
+    "updatedAt": "最近更新",
+    "count": "共 {total} 个演示项目"
+  },
+  "stage": {
+    "INGEST": "资料",
+    "UNDERSTANDING": "理解产品",
+    "ANGLES": "创意",
+    "SCRIPT": "剧本",
+    "STORYBOARD": "分镜",
+    "ANIMATIC": "预演",
+    "GENERATE": "镜头",
+    "RENDER": "成片"
+  },
+  "stageDesc": {
+    "INGEST": "产品网址、演示授权、录屏、图片与说明文档的采集入口。",
+    "UNDERSTANDING": "可验证的功能事实、用户画像、推测与证据等级的确认入口。",
+    "ANGLES": "传播切口发现与三套差异化创意方案的选择入口。",
+    "SCRIPT": "30/60/120 秒时长评估与完整故事节拍脚本的编排入口。",
+    "STORYBOARD": "每镜头参考图、台词、动作、时长与转场的图文分镜工作台。",
+    "ANIMATIC": "低成本整片预演的播放与顺序调整入口。",
+    "GENERATE": "单镜头视频生成、候选版本对比与审核入口。",
+    "RENDER": "整片合成、历史成片版本与导出入口。"
+  },
+  "fallback": {
+    "notFoundTitle": "页面不存在或已被移除",
+    "notFoundDesc": "请检查访问地址，或返回工作台重新选择演示项目。",
+    "forbiddenTitle": "当前演示角色无权访问该页面",
+    "forbiddenDesc": "请切换演示角色后重试。M0 的权限只是前端演示，不等于服务端授权。",
+    "errorTitle": "演示服务暂时不可用",
+    "errorDesc": "请稍后重试；如持续失败，请确认 Nitro Mock 服务是否已启动。",
+    "offlineTitle": "网络连接已断开",
+    "offlineDesc": "请检查网络后刷新页面。"
+  },
+  "status": {
+    "DRAFT": "草稿",
+    "IN_PROGRESS": "进行中",
+    "WAITING_REVIEW": "待审核",
+    "COMPLETED": "已完成",
+    "ARCHIVED": "已归档"
+  },
+  "platform": {
+    "douyin": "抖音",
+    "wechat_channels": "视频号",
+    "bilibili": "B站",
+    "tiktok": "TikTok",
+    "website": "官网",
+    "sales": "销售介绍",
+    "other": "其他"
+  },
+  "placeholder": {
+    "badge": "M0 占位",
+    "title": "{stage}功能尚未开始开发",
+    "desc": "当前阶段只确认路由、布局与数据边界。M1/M2 会在此承接真实业务模块，不会伪造可用按钮。",
+    "projectLabel": "当前项目",
+    "planned": "计划承接",
+    "plannedMilestone": "M1",
+    "backToIngest": "回到资料采集"
+  },
+  "studioShell": {
+    "saveStatus": "Mock 模式：业务状态保存到演示服务，文件内容仅本地可用",
+    "roleLabel": "当前角色",
+    "logout": "退出登录"
+  },
+  "pages": {
+    "assetsTitle": "素材库",
+    "assetsDesc": "素材上传、分类与引用关系将在后续里程碑实现。",
+    "tasksTitle": "生成任务",
+    "tasksDesc": "异步生成任务、重试与失败释放入口将在后续里程碑实现。",
+    "billingTitle": "积分与账单",
+    "billingDesc": "报价、冻结、结算与账本流水将在 M3 实现；当前不产生任何真实费用。",
+    "modelsTitle": "模型设置",
+    "modelsDesc": "视频模型与生成参数配置将在接入真实服务前设计。",
+    "brandTitle": "品牌设置",
+    "brandDesc": "品牌资产、语气与水印规范将在 M2 设计。"
+  }
+}

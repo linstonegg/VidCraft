@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { LanguageOption } from '@vben/constants';
+import { onMounted, ref, unref } from 'vue';
 
-import { onMounted, onUnmounted, ref, unref } from 'vue';
-
-import { onSupportLanguagesChange } from '@vben/constants';
+import { SUPPORT_LANGUAGES } from '@vben/constants';
 import { $t } from '@vben/locales';
 import { useTimezoneStore } from '@vben/stores';
 
@@ -15,31 +13,16 @@ defineOptions({
   name: 'PreferenceGeneralConfig',
 });
 
-const appLocale = defineModel<string | undefined>('appLocale', {
-  default: undefined,
-});
-const appTimezone = defineModel<string | undefined>('appTimezone', {
-  default: undefined,
-});
+const appLocale = defineModel<string>('appLocale');
+const appTimezone = defineModel<string>('appTimezone');
 const appDynamicTitle = defineModel<boolean>('appDynamicTitle');
 const appWatermark = defineModel<boolean>('appWatermark');
-const appWatermarkContent = defineModel<string | undefined>(
-  'appWatermarkContent',
-  {
-    default: undefined,
-  },
-);
+const appWatermarkContent = defineModel<string>('appWatermarkContent');
 const appEnableCheckUpdates = defineModel<boolean>('appEnableCheckUpdates');
 const appEnableCopyPreferences = defineModel<boolean>(
   'appEnableCopyPreferences',
 );
 const timezoneStore = useTimezoneStore();
-
-const languageList = ref<LanguageOption[]>([]);
-const unsubscribe = onSupportLanguagesChange((langs) => {
-  languageList.value = [...langs];
-});
-onUnmounted(unsubscribe);
 
 const timezoneOptionsRef = ref<
   {
@@ -59,7 +42,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <SelectItem v-model="appLocale" :items="languageList">
+  <SelectItem v-model="appLocale" :items="SUPPORT_LANGUAGES">
     {{ $t('preferences.language') }}
   </SelectItem>
   <SelectItem v-model="appTimezone" :items="timezoneOptionsRef">

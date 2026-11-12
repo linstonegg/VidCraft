@@ -1,7 +1,11 @@
-import { initPreferences } from '@vben/preferences';
+import { initPreferences, updatePreferences } from '@vben/preferences';
 import { unmountGlobalLoading } from '@vben/utils';
 
 import { overridesPreferences } from './preferences';
+
+// Element Plus 主题样式一次性引入（替代按组件样式注入，保证 Vite 预构建稳定）
+import 'element-plus/dist/index.css';
+import './styles/creative-video.css';
 
 /**
  * 应用初始化完成之后再进行页面加载渲染
@@ -19,6 +23,11 @@ async function initApplication() {
     overrides: overridesPreferences,
   });
 
+  // VidCraft 保留页面切换动画：避免旧缓存/旧偏好把 enable 或 name 置空。
+  updatePreferences({
+    transition: { enable: true, loading: true, name: 'fade-slide' },
+  });
+
   // 启动应用并挂载
   // vue应用主要逻辑及视图
   const { bootstrap } = await import('./bootstrap');
@@ -28,4 +37,4 @@ async function initApplication() {
   unmountGlobalLoading();
 }
 
-void initApplication();
+initApplication();

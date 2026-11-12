@@ -98,7 +98,7 @@ export function useExpandable(props: FormRenderProps) {
   }
 
   onMounted(() => {
-    void calculateRowMapping();
+    calculateRowMapping();
   });
 
   return { isCalculated, keepFormItemIndex, wrapperRef };
